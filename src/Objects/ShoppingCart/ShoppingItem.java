@@ -19,5 +19,5 @@ public class ShoppingItem {
         this.PR_I_Amount = PR_I_Amount;
     }
 
-
+    public Good getPR_G_Item() { return PR_G_Item; }
 }
