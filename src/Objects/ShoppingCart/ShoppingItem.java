@@ -20,4 +20,8 @@ public class ShoppingItem {
     }
 
     public Good getPR_G_Item() { return PR_G_Item; }
+
+    public boolean checkPRGItemID(int T_ID) {
+        return T_ID == PR_G_Item.getPR_F_I_number();
+    }
 }
