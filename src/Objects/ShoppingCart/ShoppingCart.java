@@ -3,16 +3,22 @@ package Objects.ShoppingCart;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingCartItem {
+public class ShoppingCart {
+	private final String PR_S_Name;
     private final List<ShoppingItem> PR_LSI_ShoppingCart;
     private final ShoppingCartEnumeration PR_SCE_ShoppingCartType;
 
-    public ShoppingCartItem(ShoppingCartEnumeration PR_SCE_ShoppingCartType) {
+    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name) {
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = PR_SCE_ShoppingCartType;
+        this.PR_S_Name = PR_S_Name;
     }
 
-    public boolean addShoppingItem(ShoppingItem TItem) {
+    public String getPR_S_Name() {
+		return PR_S_Name;
+	}
+
+	public boolean addShoppingItem(ShoppingItem TItem) {
         return PR_LSI_ShoppingCart.add(TItem);
     }
 

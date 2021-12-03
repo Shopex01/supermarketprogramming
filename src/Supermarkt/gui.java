@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -28,12 +29,20 @@ import java.awt.Choice;
 import java.awt.Button;
 import javax.swing.JPopupMenu;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import Objects.ShoppingCart.*;
+import java.util.Arrays;
+
 
 public class gui extends JFrame{
 
-	private JPanel contentPane;
+	private static JPanel contentPane;
 	private JTextField textField;
-	private JTextField textField_1;
+	private static JTextField textField_1;
+	private static Choice choice;
+	private static ArrayList<ShoppingCart> shopCarts;
+	private static String out2 = Arrays.toString(shopCarts.toArray());
 
 	/**
 	 * Launch the application.
@@ -44,15 +53,24 @@ public class gui extends JFrame{
 				try {
 					gui frame = new gui();
 					frame.setVisible(true);
+					shopCarts = new ArrayList<>();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});
-		
-		
+		});	
 	}
+	
 
+	protected static boolean createCart(ShoppingCartEnumeration category, String name) {
+		if(name != null) {
+			shopCarts.add(new ShoppingCart(category, name));
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -118,10 +136,6 @@ public class gui extends JFrame{
 		textArea_2.setBounds(10, 299, 509, 35);
 		warenkorbListLayer.add(textArea_2);
 		
-		JList list_2_1 = new JList();
-		list_2_1.setBounds(10, 94, 509, 194);
-		warenkorbListLayer.add(list_2_1);
-		
 		JTextArea txtrAktuellerWarenkorbXy_2 = new JTextArea();
 		txtrAktuellerWarenkorbXy_2.setText("Warenkorb XY");
 		txtrAktuellerWarenkorbXy_2.setEditable(false);
@@ -158,14 +172,33 @@ public class gui extends JFrame{
 		txtrWarenkorbkategorie.setBounds(226, 42, 151, 20);
 		warenkorbListLayer.add(txtrWarenkorbkategorie);
 		
-		Choice choice = new Choice();
+		choice = new Choice();
 		warenkorbListLayer.setLayer(choice, 4);
 		choice.setBounds(387, 42, 132, 20);
 		warenkorbListLayer.add(choice);
 		
 		JButton btnNewButton = new JButton("Neuen Warenkorb erstellen");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShoppingCartEnumeration ShopEnum = ShoppingCartEnumeration.valueOf(gui.choice.getSelectedItem());
+				gui.createCart(ShopEnum, gui.textField_1.getText());
+			}
+
+		});
 		btnNewButton.setBounds(10, 68, 509, 23);
 		warenkorbListLayer.add(btnNewButton);
+		
+		JList list = new JList();
+		list.setBounds(20, 102, 1, 1);
+		warenkorbListLayer.add(list);
+		DefaultListModel<String> model = new DefaultListModel<>();
+		JList<String> list_1 = new JList<>(model);
+		model.addElement(out2);
+		//DefaultListModel<String> model = new DefaultListModel<>();
+		//JList<String> list = new JList<>( model )
+		//list_1.add("hallo");
+		list_1.setBounds(10, 102, 499, 186);
+		warenkorbListLayer.add(list_1);
 		choice.add("Öko-Prinzip");
 		choice.add("U18");
 		choice.add("Mitarbeiterkaufprogramm");
@@ -217,5 +250,11 @@ public class gui extends JFrame{
 		txtrWarenkorbwert.setEditable(false);
 		txtrWarenkorbwert.setBounds(267, 11, 110, 20);
 		warenkorbLayer.add(txtrWarenkorbwert);
+	}
+	
+	
+	
+	private boolean addAmount() {
+		
 	}
 }
