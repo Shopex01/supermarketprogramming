@@ -4,5 +4,6 @@ public enum ShoppingCartEnumeration {
     NONE,
     ECONOMIC,
     EMPLOYEE,
-    SAVING
+    SAVING,
+    U18
 }

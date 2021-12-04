@@ -49,4 +49,36 @@ public class ShoppingCart {
     public ShoppingCartEnumeration getPR_SCE_ShoppingCartType() {
         return PR_SCE_ShoppingCartType;
     }
+
+    private String getPR_SCE_ShoppingCartTypeString() {
+        return switch (PR_SCE_ShoppingCartType) {
+            case ECONOMIC -> "Öko-Prinzip";
+            case U18 -> "U18";
+            case EMPLOYEE -> "Mitarbeiterkaufprogramm";
+            case SAVING -> "Spar-Korb";
+            case NONE -> "Standard";
+        };
+    }
+
+    private String getPR_LSI_ShoppingCartOverallValue() {
+        if (PR_LSI_ShoppingCart.isEmpty())
+        {
+            return "0.00 EUR";
+        }
+        else {
+            Double OValue = (double) 0;
+            for (ShoppingItem i: PR_LSI_ShoppingCart) {
+                if (PR_SCE_ShoppingCartType==ShoppingCartEnumeration.EMPLOYEE) {
+                    OValue += i.getPR_G_Item().getPR_F_BD_purchasevalue();
+                } else {
+                    OValue += i.getPR_G_Item().getPR_F_BD_sellvalue();
+                }
+            }
+            return OValue.toString()+" EUR";
+        }
+    }
+
+    public String getListName() {
+        return PR_S_Name + " " + getPR_SCE_ShoppingCartTypeString() + " - " + getPR_LSI_ShoppingCartOverallValue();
+    }
 }

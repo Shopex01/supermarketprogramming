@@ -8,12 +8,12 @@ public class Good {
     private final int PR_F_I_number; //Good-ID
     private final GoodCategoryEnumerations PR_F_GCE_category; //Good-Category
     private final String PR_F_S_name; //Good-Name
-    private final BigDecimal PR_F_BD_purchasevalue; //Good-PurchasePrice
-    private final BigDecimal PR_F_BD_sellvalue; //Good-SellPrice
+    private final Double PR_F_BD_purchasevalue; //Good-PurchasePrice
+    private final Double PR_F_BD_sellvalue; //Good-SellPrice
     private final Currency PR_F_C_currency; //Good-Currency
     private final GoodPropertyEnumerations PR_F_GPE_property; //Good-Property
 
-    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, BigDecimal T_BD_PPrice, BigDecimal T_BD_SPrice, GoodPropertyEnumerations T_GPE_Prop) {
+    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_BD_PPrice, Double T_BD_SPrice, GoodPropertyEnumerations T_GPE_Prop) {
         PR_F_I_number = T_I_Num;
         PR_F_GCE_category = T_GCE_Cat;
         PR_F_S_name = T_S_Name;
@@ -35,11 +35,11 @@ public class Good {
         return PR_F_S_name;
     }
 
-    public BigDecimal getPR_F_BD_purchasevalue() {
+    public Double getPR_F_BD_purchasevalue() {
         return PR_F_BD_purchasevalue;
     }
 
-    public BigDecimal getPR_F_BD_sellvalue() {
+    public Double getPR_F_BD_sellvalue() {
         return PR_F_BD_sellvalue;
     }
 
