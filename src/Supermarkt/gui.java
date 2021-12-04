@@ -42,7 +42,7 @@ public class gui extends JFrame{
 	private static JTextField textField_1;
 	private static Choice choice;
 	private static ArrayList<ShoppingCart> shopCarts;
-	private static String out2 = Arrays.toString(shopCarts.toArray());
+	//private static String out2 = Arrays.toString(shopCarts.toArray());
 
 	/**
 	 * Launch the application.
@@ -75,7 +75,7 @@ public class gui extends JFrame{
 	 * Create the frame.
 	 */
 	public gui() {
-		
+		ShoppingCart Test = new ShoppingCart(ShoppingCartEnumeration.NONE,"NMame");
 		Supermarkt out = new Supermarkt();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -193,13 +193,13 @@ public class gui extends JFrame{
 		warenkorbListLayer.add(list);
 		DefaultListModel<String> model = new DefaultListModel<>();
 		JList<String> list_1 = new JList<>(model);
-		model.addElement(out2);
+		model.addElement(Test.getListName());
 		//DefaultListModel<String> model = new DefaultListModel<>();
 		//JList<String> list = new JList<>( model )
 		//list_1.add("hallo");
 		list_1.setBounds(10, 102, 499, 186);
 		warenkorbListLayer.add(list_1);
-		choice.add("Öko-Prinzip");
+		choice.add("Ã–ko-Prinzip");
 		choice.add("U18");
 		choice.add("Mitarbeiterkaufprogramm");
 		choice.add("Spar-Korb");
@@ -250,11 +250,5 @@ public class gui extends JFrame{
 		txtrWarenkorbwert.setEditable(false);
 		txtrWarenkorbwert.setBounds(267, 11, 110, 20);
 		warenkorbLayer.add(txtrWarenkorbwert);
-	}
-	
-	
-	
-	private boolean addAmount() {
-		
 	}
 }

@@ -4,7 +4,7 @@ public class Supermarkt{
 	
 	String status_produkt = " Artikel XY x1 in Warenkorb XY eingetragen.";
 	String status_warenkorb = " Gutschein XY angewandt / Artikel XY entfernt.";
-	String status_warenkorbliste = " Warenkorb XY ausgew‰hlt.";
+	String status_warenkorbliste = " Warenkorb XY ausgew√§hlt.";
 	
 	public String output_produkt() {		
 		return status_produkt;
