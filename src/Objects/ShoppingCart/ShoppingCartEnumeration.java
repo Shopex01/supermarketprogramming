@@ -1,7 +1,7 @@
 package Objects.ShoppingCart;
 
 public enum ShoppingCartEnumeration {
-    NONE,
+    STANDARD,
     ECONOMIC,
     EMPLOYEE,
     SAVING,
