@@ -6,7 +6,7 @@ import Objects.ShoppingCart.ShoppingCartEnumeration;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class Supermarkt{
+public class Backend {
 
 	private static final DefaultListModel<String> model = new DefaultListModel<>();
 	private static ArrayList<ShoppingCart> shopCarts;
@@ -26,7 +26,7 @@ public class Supermarkt{
 		return status_warenkorbliste;
 	}
 
-	public Supermarkt() {
+	public Backend() {
 		shopCarts = new ArrayList<>();
 
 	}
