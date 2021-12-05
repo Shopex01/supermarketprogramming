@@ -1,11 +1,11 @@
 import java.awt.*;
-import GUI.GUI;
+import GUI.Frontend;
 
 public class Start {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                GUI frame = new GUI();
+                Frontend frame = new Frontend();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
