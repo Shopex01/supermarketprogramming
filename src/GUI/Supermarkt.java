@@ -1,4 +1,4 @@
-package Supermarkt;
+package GUI;
 
 import Objects.ShoppingCart.ShoppingCart;
 import Objects.ShoppingCart.ShoppingCartEnumeration;
@@ -43,5 +43,9 @@ public class Supermarkt{
 			return false;
 		}
 		return true;
+	}
+
+	public boolean addShoppingCart(ShoppingCart TObject) {
+		return shopCarts.add(TObject);
 	}
 }
