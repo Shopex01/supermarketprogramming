@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class Backend {
 
-	private static final DefaultListModel<String> model = new DefaultListModel<>();
-	private static ArrayList<ShoppingCart> shopCarts;
-	String status_produkt = "";
-	String status_warenkorb = "";
-	String status_warenkorbliste = "";
+	private static final DefaultListModel<String> PR_Model = new DefaultListModel<>();
+	private static ArrayList<ShoppingCart> PR_S_shopCarts;
+	private String status_produkt = "";
+	private String status_warenkorb = "";
+	private String status_warenkorbliste = "";
 	
 	public String output_produkt() {		
 		return status_produkt;
@@ -27,18 +27,18 @@ public class Backend {
 	}
 
 	public Backend() {
-		shopCarts = new ArrayList<>();
-
+		PR_S_shopCarts = new ArrayList<>();
 	}
 
 	public DefaultListModel<String> getModel() {
-		return model;
+		return PR_Model;
 	}
+
 	protected static boolean createCart(ShoppingCartEnumeration category, String name) {
 		if(name != null) {
 			ShoppingCart cart = new ShoppingCart(category, name);
-			shopCarts.add(cart);
-			model.addElement(cart.getListName());
+			PR_S_shopCarts.add(cart);
+			PR_Model.addElement(cart.getListName());
 		} else {
 			return false;
 		}
@@ -46,6 +46,6 @@ public class Backend {
 	}
 
 	public boolean addShoppingCart(ShoppingCart TObject) {
-		return shopCarts.add(TObject);
+		return PR_S_shopCarts.add(TObject);
 	}
 }

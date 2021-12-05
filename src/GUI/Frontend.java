@@ -73,7 +73,7 @@ public class Frontend extends JFrame {
         JLayeredPane TShoppingCartListLayer = new JLayeredPane();
         TTabbedPane.addTab("Warenkorbliste", null, TShoppingCartListLayer, null);
 
-        JTextArea TShoppingCartListLayer_TA_Status = new JTextArea(TBackend.status_warenkorbliste);
+        JTextArea TShoppingCartListLayer_TA_Status = new JTextArea(TBackend.output_warenkorbliste());
         TShoppingCartListLayer_TA_Status.setEditable(false);
         TShoppingCartListLayer_TA_Status.setWrapStyleWord(true);
         TShoppingCartListLayer_TA_Status.setForeground(Color.GREEN);
@@ -174,7 +174,7 @@ public class Frontend extends JFrame {
         TShoppingCartLayer_TP_CouponCode.setBounds(250, 271, 110, 20);
         TShoppingCartLayer.add(TShoppingCartLayer_TP_CouponCode);
 
-        JTextArea TShoppingCartLayer_TA_Status = new JTextArea(TBackend.status_warenkorb);
+        JTextArea TShoppingCartLayer_TA_Status = new JTextArea(TBackend.output_warenkorb());
         TShoppingCartLayer_TA_Status.setEditable(false);
         TShoppingCartLayer_TA_Status.setWrapStyleWord(true);
         TShoppingCartLayer_TA_Status.setForeground(Color.GREEN);
