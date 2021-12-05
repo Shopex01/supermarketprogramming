@@ -17,6 +17,23 @@ public class Supermarkt{
 	public String output_warenkorbliste() {
 		return status_warenkorbliste;
 	}
-	
-	
+
+	public Supermarkt() {
+		shopCarts = new ArrayList<>();
+
+	}
+
+	public DefaultListModel<String> getModel() {
+		return model;
+	}
+	protected static boolean createCart(ShoppingCartEnumeration category, String name) {
+		if(name != null) {
+			ShoppingCart cart = new ShoppingCart(category, name);
+			shopCarts.add(cart);
+			model.addElement(cart.getListName());
+		} else {
+			return false;
+		}
+		return true;
+	}
 }

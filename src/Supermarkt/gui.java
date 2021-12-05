@@ -1,36 +1,23 @@
 package Supermarkt;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JToolBar;
 import javax.swing.JTextPane;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.Color;
-import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
-import java.awt.Font;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
 import javax.swing.JTextField;
-import java.awt.List;
 import javax.swing.UIManager;
-import java.awt.SystemColor;
 import java.awt.Choice;
-import java.awt.Button;
-import javax.swing.JPopupMenu;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import Objects.ShoppingCart.*;
 import java.util.Arrays;
 
@@ -251,4 +238,5 @@ public class gui extends JFrame{
 		txtrWarenkorbwert.setBounds(267, 11, 110, 20);
 		warenkorbLayer.add(txtrWarenkorbwert);
 	}
+
 }
