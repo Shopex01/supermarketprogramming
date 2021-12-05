@@ -74,7 +74,7 @@ public class ShoppingCart {
                     OValue += i.getPR_G_Item().getPR_F_BD_sellvalue();
                 }
             }
-            return OValue.toString()+" EUR";
+            return OValue +" EUR";
         }
     }
 

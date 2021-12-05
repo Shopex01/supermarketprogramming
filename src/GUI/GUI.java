@@ -1,10 +1,8 @@
-package Supermarkt;
+package GUI;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -17,50 +15,27 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import java.awt.Choice;
-import java.util.ArrayList;
 import Objects.ShoppingCart.*;
 
 
-public class gui extends JFrame{
+public class GUI extends JFrame{
 
-	private static JPanel contentPane;
-	private final JTextField textField;
 	private static JTextField textField_1;
 	private static Choice choice;
-	private static ArrayList<ShoppingCart> shopCarts;
-	private static final DefaultListModel<String> model = new DefaultListModel<>();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					gui frame = new gui();
-					frame.setVisible(true);
-					shopCarts = new ArrayList<ShoppingCart>();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
 	/**
 	 * Create the frame.
 	 */
-	public gui() {
+	public GUI() {
 
 		//Default Cart
-		shopCarts = new ArrayList<ShoppingCart>();
-		ShoppingCart DefaultCart = new ShoppingCart(ShoppingCartEnumeration.STANDARD,"NMame");
-		shopCarts.add(DefaultCart);
 		Supermarkt backend = new Supermarkt();
+		ShoppingCart DefaultCart = new ShoppingCart(ShoppingCartEnumeration.STANDARD,"NMame");
+		backend.addShoppingCart(DefaultCart);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 412);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -69,8 +44,8 @@ public class gui extends JFrame{
 		tabbedPane.setBounds(0, 0, 534, 373);
 		contentPane.add(tabbedPane);
 
-		JLayeredPane produktLayer = new JLayeredPane();
-		tabbedPane.addTab("Produktseite", null, produktLayer, null);
+		JLayeredPane productLayer = new JLayeredPane();
+		tabbedPane.addTab("Produktseite", null, productLayer, null);
 
 		JTextArea textArea = new JTextArea(backend.output_produkt());
 		textArea.setEditable(false);
@@ -79,30 +54,30 @@ public class gui extends JFrame{
 		textArea.setBackground(Color.BLACK);
 		textArea.setWrapStyleWord(true);
 		textArea.setBounds(10, 299, 509, 35);
-		produktLayer.add(textArea);
+		productLayer.add(textArea);
 
 		JList list_2_2 = new JList();
 		list_2_2.setBounds(10, 42, 509, 246);
-		produktLayer.add(list_2_2);
+		productLayer.add(list_2_2);
 
 		JTextArea txtrAktuellerWarenkorbXy_1 = new JTextArea();
 		txtrAktuellerWarenkorbXy_1.setText("Warenkorb XY");
 		txtrAktuellerWarenkorbXy_1.setEditable(false);
 		txtrAktuellerWarenkorbXy_1.setBounds(10, 11, 110, 20);
-		produktLayer.add(txtrAktuellerWarenkorbXy_1);
+		productLayer.add(txtrAktuellerWarenkorbXy_1);
 
 		JTextArea textArea_1_2 = new JTextArea();
 		textArea_1_2.setForeground(Color.GREEN);
 		textArea_1_2.setEditable(false);
 		textArea_1_2.setBackground(Color.BLACK);
 		textArea_1_2.setBounds(387, 11, 132, 22);
-		produktLayer.add(textArea_1_2);
+		productLayer.add(textArea_1_2);
 
 		JTextArea txtrWarenkorbwert_2 = new JTextArea();
 		txtrWarenkorbwert_2.setText("Warenkorbwert");
 		txtrWarenkorbwert_2.setEditable(false);
 		txtrWarenkorbwert_2.setBounds(267, 11, 110, 20);
-		produktLayer.add(txtrWarenkorbwert_2);
+		productLayer.add(txtrWarenkorbwert_2);
 
 		JLayeredPane warenkorbListLayer = new JLayeredPane();
 		tabbedPane.addTab("Warenkorbliste", null, warenkorbListLayer, null);
@@ -174,8 +149,8 @@ public class gui extends JFrame{
 		JButton btnNewButton = new JButton("Neuen Warenkorb erstellen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ShoppingCartEnumeration ShopEnum = ShoppingCartEnumeration.valueOf(gui.choice.getSelectedItem());
-				backend.createCart(ShopEnum, gui.textField_1.getText());
+				ShoppingCartEnumeration ShopEnum = ShoppingCartEnumeration.valueOf(GUI.choice.getSelectedItem());
+				Supermarkt.createCart(ShopEnum, GUI.textField_1.getText());
 				textField_1.setText("");
 				list.repaint();
 			}
@@ -196,7 +171,7 @@ public class gui extends JFrame{
 		txtrAktuellerWarenkorbXy.setBounds(10, 11, 110, 20);
 		warenkorbLayer.add(txtrAktuellerWarenkorbXy);
 
-		textField = new JTextField();
+		JTextField textField = new JTextField();
 		textField.setBounds(370, 271, 149, 20);
 		warenkorbLayer.add(textField);
 		textField.setColumns(10);
