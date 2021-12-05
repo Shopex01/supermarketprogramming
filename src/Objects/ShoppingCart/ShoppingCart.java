@@ -56,7 +56,7 @@ public class ShoppingCart {
             case U18 -> "U18";
             case EMPLOYEE -> "Mitarbeiterkaufprogramm";
             case SAVING -> "Spar-Korb";
-            case NONE -> "Standard";
+            case STANDARD -> "Standard";
         };
     }
 
