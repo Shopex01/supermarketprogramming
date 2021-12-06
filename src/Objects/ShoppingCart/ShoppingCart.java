@@ -69,9 +69,9 @@ public class ShoppingCart {
             Double OValue = (double) 0;
             for (ShoppingItem i: PR_LSI_ShoppingCart) {
                 if (PR_SCE_ShoppingCartType==ShoppingCartEnumeration.EMPLOYEE) {
-                    OValue += i.getPR_G_Item().getPR_F_BD_purchasevalue();
+                    OValue += i.getPR_G_Item().getPR_F_D_purchasevalue();
                 } else {
-                    OValue += i.getPR_G_Item().getPR_F_BD_sellvalue();
+                    OValue += i.getPR_G_Item().getPR_F_D_sellvalue();
                 }
             }
             return OValue +" EUR";

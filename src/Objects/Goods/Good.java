@@ -1,9 +1,8 @@
 package Objects.Goods;
 
-import java.util.Currency;
 
 /**
- * This class represents the good in a supermarket in general!
+ * Diese Klasse repräsentiert das Produkt allgemein in einem Supermarkt!
  * @author Arthur Ladner
  * @version 1.0
  */
@@ -14,17 +13,16 @@ public class Good {
     private final String PR_F_S_name; //Good-Name
     private final Double PR_F_D_purchasevalue; //Good-PurchasePrice
     private final Double PR_F_D_sellvalue; //Good-SellPrice
-    private final Currency PR_F_C_currency; //Good-Currency
     private final GoodPropertyEnumerations PR_F_GPE_property; //Good-Property
 
     /**
-     * Generates a good based on the following parameters
-     * @param T_I_Num Good - ID
-     * @param T_GCE_Cat Good - Category (food, household, other)
-     * @param T_S_Name Good - Name
-     * @param T_D_PPrice Good - Purchase-Value
-     * @param T_D_SPrice Good - Sell-Price
-     * @param T_GPE_Prop Good - Property (none, expiration-date, recycling, fsk)
+     * Generiert ein Produkt anhand folgender Eigenschaften:
+     * @param T_I_Num Produkt-ID
+     * @param T_GCE_Cat Produkt-Kategorie (Lebensmittel, Haushaltsartikel, andere)
+     * @param T_S_Name Produkt-Name
+     * @param T_D_PPrice Produkt - Verkaufspreis
+     * @param T_D_SPrice Produkt - Einkaufspreis
+     * @param T_GPE_Prop Produkt - (weitere) Eigenschaft (Keine, Mindesthaltbarkeitsdatum, Recycling-Anteil, FSK-Kategorie)
      */
     public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_D_PPrice, Double T_D_SPrice, GoodPropertyEnumerations T_GPE_Prop) {
         PR_F_I_number = T_I_Num;
@@ -33,53 +31,51 @@ public class Good {
         PR_F_D_purchasevalue = T_D_PPrice;
         PR_F_D_sellvalue = T_D_SPrice;
         PR_F_GPE_property = T_GPE_Prop;
-        PR_F_C_currency = Currency.getInstance("EUR");
     }
 
     /**
-     * @return Good-ID (Type: Integer)
+     * Gibt die Produkt-ID aus!
+     * @return Produkt-ID (Typ: Integer)
      */
     public int getPR_F_I_number() {
         return PR_F_I_number;
     }
 
     /**
-     * @return Good - Category (Type: GoodCategoryEnumerations)
+     * Gibt die Produkt-Kategorie aus!
+     * @return Produkt-Kategorie (Typ: GoodCategoryEnumerations)
      */
     public GoodCategoryEnumerations getPR_F_GCE_category() {
         return PR_F_GCE_category;
     }
 
     /**
-     * @return Good - Name (Type: String)
+     * Gibt den Produkt-Namen aus!
+     * @return Produkt-Name (Typ: String)
      */
     public String getPR_F_S_name() {
         return PR_F_S_name;
     }
 
     /**
-     * @return Good - purchase value (Type: double)
+     * Gibt den Einkaufspreis des Produktes aus!
+     * @return Produkt - Einkaufspreis (Typ: double)
      */
     public Double getPR_F_D_purchasevalue() {
         return PR_F_D_purchasevalue;
     }
 
     /**
-     * @return Good - sell value (Type: double)
+     * Gibt den Verkaufspreis des Produktes aus!
+     * @return Produkt - Verkaufspreis (Typ: double)
      */
     public Double getPR_F_D_sellvalue() {
         return PR_F_D_sellvalue;
     }
 
     /**
-     * @return Good - Currency (Type: Currency)
-     */
-    public Currency getPR_F_C_currency() {
-        return PR_F_C_currency;
-    }
-
-    /**
-     * @return Good - property (Type: GoodPropertyEnumerations)
+     * Gibt die (weitere) Eigenschaft des Produktes zurück!
+     * @return Produkt - (weitere) Eigenschaft (Typ: GoodPropertyEnumerations)
      */
     public GoodPropertyEnumerations getPR_F_GPE_property() {
         return PR_F_GPE_property;
