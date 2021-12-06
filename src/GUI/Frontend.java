@@ -6,8 +6,6 @@ import Objects.ShoppingCart.ShoppingCartEnumeration;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class Frontend extends JFrame {
@@ -132,7 +130,7 @@ public class Frontend extends JFrame {
         JList TShoppingCartListLayer_JL = new JList();
         TShoppingCartListLayer_JL.setBounds(20, 102, 1, 1);
         TShoppingCartListLayer.add(TShoppingCartListLayer_JL);
-        
+
         JList<String> TShoppingCartListLayer_JL_1 = new JList<>(TBackend.getModel()); //Warenkorb-Liste Tab
         TBackend.getModel().addElement(TDefaultCart.getListName()); //Default Cart einfügen
         TShoppingCartListLayer_JL_1.setBounds(10, 102, 499, 186);
