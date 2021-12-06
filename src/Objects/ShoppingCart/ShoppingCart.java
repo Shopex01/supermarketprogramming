@@ -50,7 +50,7 @@ public class ShoppingCart {
         return PR_SCE_ShoppingCartType;
     }
 
-    private String getPR_SCE_ShoppingCartTypeString() {
+    public String getPR_SCE_ShoppingCartTypeString() {
         return switch (PR_SCE_ShoppingCartType) {
             case ECONOMIC -> "Öko-Prinzip";
             case U18 -> "U18";
@@ -60,7 +60,7 @@ public class ShoppingCart {
         };
     }
 
-    private String getPR_LSI_ShoppingCartOverallValue() {
+    public String getPR_LSI_ShoppingCartOverallValue() {
         if (PR_LSI_ShoppingCart.isEmpty())
         {
             return "0.00 EUR";
