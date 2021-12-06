@@ -63,7 +63,7 @@ public class ShoppingCart {
     public String getPR_LSI_ShoppingCartOverallValue() {
         if (PR_LSI_ShoppingCart.isEmpty())
         {
-            return "0.00 EUR";
+            return "0.00EUR";
         }
         else {
             Double OValue = (double) 0;
@@ -74,11 +74,11 @@ public class ShoppingCart {
                     OValue += i.getPR_G_Item().getPR_F_BD_sellvalue();
                 }
             }
-            return OValue +" EUR";
+            return OValue +"EUR";
         }
     }
 
     public String getListName() {
-        return PR_S_Name + " " + getPR_SCE_ShoppingCartTypeString() + " - " + getPR_LSI_ShoppingCartOverallValue();
+        return PR_S_Name + " " + getPR_SCE_ShoppingCartTypeString() + " " + getPR_LSI_ShoppingCartOverallValue();
     }
 }
