@@ -8,8 +8,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 
 public class Frontend extends JFrame {
@@ -95,6 +97,8 @@ public class Frontend extends JFrame {
         TShoppingCartListLayer.add(TShoppingCartListLayer_TA_ShoppingCartNameField);
         TShoppingCartListLayer_TA_ShoppingCartNameField.setColumns(10);
 
+        //JList<String> TShoppingCartTableLayer_JT_1 = new JList<>(TBackend.getModel());
+
         //Warenkorb - Kategorie ------------------------------------------------------------------@@@@@
         Choice TShoppingCartListLayer_Choice = new Choice();
         TShoppingCartListLayer.setLayer(TShoppingCartListLayer_Choice, 4);
@@ -114,7 +118,7 @@ public class Frontend extends JFrame {
 
         
       //Default Cart einfuegen -------------------------------------------------------------------@@@@@
-        TBackend.getModel().addElement(TDefaultCart.getListName());
+        //TBackend.getModel().addElement(TDefaultCart.getListName());
 
         JButton TShoppingCartListLayer_B_NewShoppingCart = new JButton("Neuen Warenkorb erstellen");
         TShoppingCartListLayer_B_NewShoppingCart.addActionListener(e -> {
@@ -129,11 +133,38 @@ public class Frontend extends JFrame {
         JScrollPane scrollPane_1 = new JScrollPane();
         scrollPane_1.setBounds(10, 102, 509, 196);
         TShoppingCartListLayer.add(scrollPane_1);
-        
+
+
+        Backend vec = new Backend();
+
+        Vector<String> header_warenkorbListe = new Vector<String>(2);
+        header_warenkorbListe.add("Warenkorbname");
+        header_warenkorbListe.add("Warenkorbart");
+        header_warenkorbListe.add("Preis");
+
         table_WarenkorbListe = new JTable();
-        table_WarenkorbListe.setModel(new DefaultTableModel(
+
+        ShoppingCart test_out = new ShoppingCart();
+        Backend test_loop = new Backend();
+
+
+        table_WarenkorbListe.setModel(test_loop.model_wListe);
+
+        for(int i=0; i<=test_loop.getShoppingCartListLength(); i++){
+            test_loop.model_wListe.addRow(new Object[]{test_out.getPR_S_Name(), test_out.getPR_SCE_ShoppingCartTypeString(), test_out.getPR_LSI_ShoppingCartOverallValue()});
+        }
+
+      /*
+      table_WarenkorbListe.setModel(new DefaultTableModel(
+
+              for(int i = 0; i<=test_loop.getShoppingCartListLength(); i++){
+
+
+        }
+
+
         	new Object[][] {
-        		{null, null, null},
+        		{test_out.getPR_S_Name(), test_out.getPR_SCE_ShoppingCartTypeString(), test_out.getPR_LSI_ShoppingCartOverallValue()},
         	},
         	new String[] {
         		"Warenkorbname", "Warenkorbart", "Preis"
@@ -146,6 +177,8 @@ public class Frontend extends JFrame {
         		return columnTypes[columnIndex];
         	}
         });
+
+       */
         table_WarenkorbListe.setShowVerticalLines(false);
         table_WarenkorbListe.setShowHorizontalLines(false);
         table_WarenkorbListe.setShowGrid(false);

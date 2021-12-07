@@ -8,6 +8,12 @@ public class ShoppingCart {
     private final List<ShoppingItem> PR_LSI_ShoppingCart;
     private final ShoppingCartEnumeration PR_SCE_ShoppingCartType;
 
+    public ShoppingCart(){
+        this.PR_LSI_ShoppingCart = new ArrayList<>();
+        this.PR_SCE_ShoppingCartType = ShoppingCartEnumeration.STANDARD;
+        this.PR_S_Name = "Test";
+    }
+
     public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name) {
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = PR_SCE_ShoppingCartType;
