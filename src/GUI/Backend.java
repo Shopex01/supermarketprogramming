@@ -40,7 +40,7 @@ public class Backend {
 	}
 
 	protected static boolean createCart(ShoppingCartEnumeration category, String name) {
-		if(name != null) {
+		if(name != null) { //Test
 			ShoppingCart cart = new ShoppingCart(category, name);
 			PR_S_shopCarts.add(cart);
 			model_wListe.addRow(new Object[]{cart.getPR_S_Name(),cart.getPR_SCE_ShoppingCartTypeString(),cart.getPR_LSI_ShoppingCartOverallValue()});	//addElement(cart.getListName());
