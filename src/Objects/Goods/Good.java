@@ -1,7 +1,12 @@
 package Objects.Goods;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Currency;
+
+import static Objects.Goods.GoodCategoryEnumerations.*;
+import static Objects.Goods.GoodCategoryEnumerations.OTHER;
+import static Objects.Goods.GoodPropertyEnumerations.EXPIRATIONDATE;
 
 public class Good {
 
@@ -50,4 +55,6 @@ public class Good {
     public GoodPropertyEnumerations getPR_F_GPE_property() {
         return PR_F_GPE_property;
     }
+
+
 }
