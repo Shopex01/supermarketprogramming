@@ -11,7 +11,7 @@ public class ShoppingCart {
     public ShoppingCart(){
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = ShoppingCartEnumeration.STANDARD;
-        this.PR_S_Name = "Test";
+        this.PR_S_Name = "Standard-Warenkorb";
     }
 
     public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name) {
