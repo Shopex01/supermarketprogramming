@@ -1,6 +1,5 @@
 package Objects.Goods;
 
-import java.math.BigDecimal;
 import java.util.Currency;
 
 public class Good {
@@ -50,4 +49,22 @@ public class Good {
     public GoodPropertyEnumerations getPR_F_GPE_property() {
         return PR_F_GPE_property;
     }
+
+    public String getPR_F_GPE_propertyString() {
+        return switch (PR_F_GPE_property) {
+            case EXPIRATIONDATE -> "Mindesthaltbarkeitsdatum";
+            case RECYCLING -> "Recycling-Anteil";
+            case FSK -> "FSK-Kategorie";
+            case NONE -> "Standard";
+        };
+    }
+
+    public String getPR_F_GCE_categoryString() {
+        return switch (PR_F_GCE_category) {
+            case FOOD -> "Lebensmittel";
+            case HOUSEHOLD -> "Haushaltsartikel";
+            case OTHER -> "Sonstige";
+        };
+    }
+
 }
