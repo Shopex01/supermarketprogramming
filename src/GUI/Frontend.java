@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 
@@ -33,17 +32,23 @@ public class Frontend extends JFrame {
     };
 
     public Frontend() {
-
         //Object-Creation -----------------------------------------------------------------------@@@@@
         Backend TBackend = new Backend();
         JTabbedPane TTabbedPane = new JTabbedPane(JTabbedPane.TOP);
         JLayeredPane TProductLayer = new JLayeredPane();
         JTextArea TProductLayer_TA_ShoppingCartValue = new JTextArea();
         JScrollPane scrollPane_Produktliste = new JScrollPane();
-        TableColumnModel tcm = table_Produktliste.getColumnModel();
+        TableColumnModel tcmProduktliste = table_Produktliste.getColumnModel();
+        TableColumnModel tcmWarenkorbListe = table_WarenkorbListe.getColumnModel();
         JLabel label_ProduktlisteTab_Preis = new JLabel("Warenwert:");
         JLabel label_ProduktlisteTab_aktWarenkorbLabel = new JLabel("Aktueller Warenkorb:");
-        JLabel label_ProduktlisteTab_aktWarenkorbValueLabel = new JLabel("Standard-Warenkorb123");
+        JLabel label_WarenkorblisteTab_aktWarenkorbLabel = new JLabel("Aktueller Warenkorb:");
+        JLabel label_WarenkorbTab_aktWarenkorbLabel = new JLabel("Aktueller Warenkorb:");
+
+        JLabel label_ProduktlisteTab_aktWarenkorbValueLabel = new JLabel(TBackend.getPR_SC_SelectedShoppingCart().getPR_S_Name());
+        JLabel label_WarenkorblisteTab_aktWarenkorbValueLabel = new JLabel(TBackend.getPR_SC_SelectedShoppingCart().getPR_S_Name());
+        JLabel label_WarenkorbTab_aktWarenkorbValueLabel = new JLabel(TBackend.getPR_SC_SelectedShoppingCart().getPR_S_Name());
+
         JLayeredPane TShoppingCartListLayer = new JLayeredPane();
         ScrollPane scrollPane_Status = new ScrollPane();
         JTextArea TShoppingCartListLayer_TA_ShoppingCartValue = new JTextArea();
@@ -65,17 +70,19 @@ public class Frontend extends JFrame {
 
         //GUI-Settings --------------------------------------------------------------------------@@@@@
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
         setBounds(100, 100, 550, 412);
         JPanel TContentPane = new JPanel();
         TContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(TContentPane);
         TContentPane.setLayout(null);
-        setResizable(false);
 
         //Tab-Panel -----------------------------------------------------------------------------@@@@@
 
         TTabbedPane.setBounds(0, 0, 534, 325);
         TContentPane.add(TTabbedPane);
+
+
 
         //Tab "Produktseite" --------------------------------------------------------------------@@@@@
         TTabbedPane.addTab("Produktseite", null, TProductLayer, null);
@@ -98,7 +105,7 @@ public class Frontend extends JFrame {
         table_Produktliste.setShowHorizontalLines(false);
         table_Produktliste.setShowGrid(false);
         scrollPane_Produktliste.setViewportView(table_Produktliste);
-        tcm.removeColumn(tcm.getColumn(0));
+        tcmProduktliste.removeColumn(tcmProduktliste.getColumn(0));
 
         label_ProduktlisteTab_Preis.setBounds(290, 11, 122, 22);
         TProductLayer.add(label_ProduktlisteTab_Preis);
@@ -112,11 +119,16 @@ public class Frontend extends JFrame {
 
         TTabbedPane.addTab("Warenkorbliste", null, TShoppingCartListLayer, null);
 
+
         TShoppingCartListLayer_TA_ShoppingCartValue.setForeground(Color.GREEN);
         TShoppingCartListLayer_TA_ShoppingCartValue.setEditable(false);
         TShoppingCartListLayer_TA_ShoppingCartValue.setBackground(Color.BLACK);
         TShoppingCartListLayer_TA_ShoppingCartValue.setBounds(387, 11, 132, 22);
         TShoppingCartListLayer.add(TShoppingCartListLayer_TA_ShoppingCartValue);
+        TShoppingCartListLayer.add(label_WarenkorblisteTab_aktWarenkorbLabel);
+        TShoppingCartListLayer.add(label_WarenkorblisteTab_aktWarenkorbValueLabel);
+        label_WarenkorblisteTab_aktWarenkorbLabel.setBounds(12,11,125,22);
+        label_WarenkorblisteTab_aktWarenkorbValueLabel.setBounds(135, 11, 145, 22);
 
         //Warenkorb - Kategorie ------------------------------------------------------------------@@@@@
 
@@ -129,6 +141,11 @@ public class Frontend extends JFrame {
         TShoppingCartListLayer_Choice.add("EMPLOYEE");
         TShoppingCartListLayer_Choice.add("SAVING");
 
+        TShoppingCartLayer.add(label_WarenkorbTab_aktWarenkorbLabel);
+        TShoppingCartLayer.add(label_WarenkorbTab_aktWarenkorbValueLabel);
+        label_WarenkorbTab_aktWarenkorbLabel.setBounds(12,11,125,22);
+        label_WarenkorbTab_aktWarenkorbValueLabel.setBounds(135, 11, 145, 22);
+
         //Status Start	--------------------------------------------------------------------------@@@@@
 
         scrollPane_Status.setBounds(0, 324, 534, 51);
@@ -140,10 +157,13 @@ public class Frontend extends JFrame {
         textField_Status.setBounds(0, 0, 24, 21);
         scrollPane_Status.add(textField_Status);
 
+        //Status End	--------------------------------------------------------------------------@@@@@
+
         TShoppingCartListLayer_B_NewShoppingCart.setEnabled(false);
         TShoppingCartListLayer_B_NewShoppingCart.addActionListener(e -> {
-            Backend.createCart(ShoppingCartEnumeration.valueOf(TShoppingCartListLayer_Choice.getSelectedItem()), TShoppingCartListLayer_TA_ShoppingCartNameField.getText());
+            Backend.createCart(ShoppingCartEnumeration.valueOf(TShoppingCartListLayer_Choice.getSelectedItem()), TShoppingCartListLayer_TA_ShoppingCartNameField.getText(),TBackend.getPR_I_ShoppingCartCounter());
             TShoppingCartListLayer_TA_ShoppingCartNameField.setText("");
+            TShoppingCartListLayer_B_NewShoppingCart.setEnabled(false);
             textField_Status.setText(TBackend.statusOverall());
         });
         TShoppingCartListLayer_B_NewShoppingCart.setBounds(10, 68, 509, 23);
@@ -167,7 +187,6 @@ public class Frontend extends JFrame {
             }
         });
 
-        //Status End	--------------------------------------------------------------------------@@@@@
 
         
       //Default Cart einfuegen -------------------------------------------------------------------@@@@@
@@ -181,17 +200,24 @@ public class Frontend extends JFrame {
         table_WarenkorbListe.setShowHorizontalLines(false);
         table_WarenkorbListe.setShowGrid(false);
         scrollPane_1.setViewportView(table_WarenkorbListe);
+        tcmWarenkorbListe.removeColumn(tcmWarenkorbListe.getColumn(0));
         table_WarenkorbListe.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount()==2){
                     JTable Input = (JTable)e.getSource();
-                    if(JOptionPane.showOptionDialog(null,"Wollen sie zum Warenkorb:"+Input.getValueAt(Input.getSelectedRow(),0)+" wechseln?","Warenkorb wechseln",1,3,null,null,null)==0) {
+                    switch (JOptionPane.showOptionDialog(null,"Wollen sie zum Warenkorb: "+Input.getValueAt(Input.getSelectedRow(),0)+" wechseln?","Warenkorb wechseln",0,3,null,null,null)){
+                        case 0 -> {
+                            TBackend.switchShoppingCart((int)Input.getModel().getValueAt(Input.getSelectedRow(),0));
+                            System.out.println(TBackend.getPR_SC_SelectedShoppingCart().getPR_S_Name());
+                        }
 
+                        case 1 -> {
+
+                        }
                     }
                 }
-            }
-        });
+            }});
 
         label_WarenkorbListeTab_NewName.setBounds(10, 42, 122, 22);
         TShoppingCartListLayer.add(label_WarenkorbListeTab_NewName);
@@ -218,10 +244,12 @@ public class Frontend extends JFrame {
         scrollPane_Warenkorb.setBounds(10, 43, 509, 220);
         TShoppingCartLayer.add(scrollPane_Warenkorb);
 
+        table_Warenkorb.setModel(Backend.model_warenkorb);
         table_Warenkorb.setShowGrid(false);
         table_Warenkorb.setShowHorizontalLines(false);
         table_Warenkorb.setShowVerticalLines(false);
-        table_Warenkorb.setModel(new DefaultTableModel(
+
+        /*table_Warenkorb.setModel(new DefaultTableModel(
         	new Object[][] {
         		{null, null, null},
         	},
@@ -235,10 +263,10 @@ public class Frontend extends JFrame {
         	public Class getColumnClass(int columnIndex) {
         		return columnTypes[columnIndex];
         	}
-        });
+        });*/
         scrollPane_Warenkorb.setViewportView(table_Warenkorb);
 
-        label_WarenkorbTab_Preis.setBounds(264, 12, 122, 22);
+        label_WarenkorbTab_Preis.setBounds(290, 11, 122, 22);
         TShoppingCartLayer.add(label_WarenkorbTab_Preis);
 
         label_WarenkorbTab_Gutschein.setBounds(248, 269, 122, 22);
