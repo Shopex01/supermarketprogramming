@@ -4,20 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
+    private final int PR_F_I_ID;
 	private final String PR_S_Name;
-    private final List<ShoppingItem> PR_LSI_ShoppingCart;
+    protected ArrayList<ShoppingItem> PR_LSI_ShoppingCart;
     private final ShoppingCartEnumeration PR_SCE_ShoppingCartType;
 
-    public ShoppingCart(){
+    public ShoppingCart(int PR_F_I_ID){
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = ShoppingCartEnumeration.STANDARD;
         this.PR_S_Name = "Standard-Warenkorb";
+        this.PR_F_I_ID = PR_F_I_ID;
     }
 
-    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name) {
+    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name, int PR_F_I_ID) {
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = PR_SCE_ShoppingCartType;
         this.PR_S_Name = PR_S_Name;
+        this.PR_F_I_ID = PR_F_I_ID;
     }
 
     public String getPR_S_Name() {
@@ -86,5 +89,9 @@ public class ShoppingCart {
 
     public String getListName() {
         return PR_S_Name + " " + getPR_SCE_ShoppingCartTypeString() + " " + getPR_LSI_ShoppingCartOverallValue();
+    }
+
+    public int getPR_F_I_ID() {
+        return PR_F_I_ID;
     }
 }

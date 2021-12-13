@@ -14,7 +14,7 @@ import static Objects.Goods.GoodPropertyEnumerations.*;
 
 public class Backend {
 
-	protected static final DefaultTableModel model_wListe = new DefaultTableModel(new String[] {"Warenkorbname", "Warenkorbart", "Preis"}, 0);
+	protected static final DefaultTableModel model_wListe = new DefaultTableModel(new String[] {"ID","Warenkorbname", "Warenkorbart", "Preis"}, 0);
 	protected static final DefaultTableModel model_pListe = new DefaultTableModel(new String[] {"ID", "Kategorie","Produkt", "Preis","Weitere Eigenschaft"}, 0);
 	protected static final DefaultTableModel model_warenkorb = new DefaultTableModel(new String[] {"Artikel", "Menge", "Preis"}, 0);
 
@@ -30,6 +30,7 @@ public class Backend {
 	protected static String cart_stat_newCart = "";
 	protected static String cart_stat_newProd = "";
 	protected static String cart_stat_deleteProd = "";
+	private int PR_I_ShoppingCartCounter;
 
 	private static boolean stat_newProdInCart =false;
 	private static boolean stat_deleteProdFromCart=false;
@@ -57,20 +58,21 @@ public class Backend {
 	}
 
 	private void refreshGoodsTable() {
-		for(int i=0;i<model_pListe.getRowCount();i++){
-			model_pListe.removeRow(i);
+		int j = model_pListe.getRowCount();
+		for(int i=0;i<j;i++){
+			model_pListe.removeRow(0);
 		}
 		switch (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()) {
 			case ECONOMIC -> {
 				for(Good G: PR_AL_Goods){
-					if (Arrays.stream(new int[] {4, 8}).anyMatch(value -> value!=G.getPR_F_I_number())) {
+					if (G.getPR_F_I_number()!=4 && G.getPR_F_I_number()!=8) {
 						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_sellvalue(),G.getPR_F_GPE_propertyString()});
 					}
 				}
 			}
 			case U18 -> {
 				for(Good G: PR_AL_Goods){
-					if (Arrays.stream(new int[] {6, 11}).anyMatch(value -> value!=G.getPR_F_I_number())) {
+					if (G.getPR_F_I_number()!=6 && G.getPR_F_I_number()!=11) {
 						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_sellvalue(),G.getPR_F_GPE_propertyString()});
 					}
 				}
@@ -94,7 +96,8 @@ public class Backend {
 
 	private void initialize() {
 		PR_AL_shopCarts = new ArrayList<>();
-		PR_SC_SelectedShoppingCart = createCart(ShoppingCartEnumeration.STANDARD,"Standard-Warenkorb");
+		PR_I_ShoppingCartCounter = 0;
+		PR_SC_SelectedShoppingCart = createCart(ShoppingCartEnumeration.STANDARD,"Standard-Warenkorb",getPR_I_ShoppingCartCounter());
 	}
 
 	private void allGoods(){
@@ -130,11 +133,11 @@ public class Backend {
 		this.PR_SC_SelectedShoppingCart = PR_SC_SelectedShoppingCart;
 	}
 
-	protected static ShoppingCart createCart(ShoppingCartEnumeration category, String name) {
+	protected static ShoppingCart createCart(ShoppingCartEnumeration category, String name, int ID) {
 		if(name != null && !name.equals("")) {
-			ShoppingCart cart = new ShoppingCart(category, name);
+			ShoppingCart cart = new ShoppingCart(category, name,ID);
 			PR_AL_shopCarts.add(cart);
-			model_wListe.addRow(new Object[]{cart.getPR_S_Name(),cart.getPR_SCE_ShoppingCartTypeString(),cart.getPR_LSI_ShoppingCartOverallValue()});
+			model_wListe.addRow(new Object[]{cart.getPR_F_I_ID(),cart.getPR_S_Name(),cart.getPR_SCE_ShoppingCartTypeString(),cart.getPR_LSI_ShoppingCartOverallValue()});
 			stat_newCart=true;
 			cart_stat_newCart = (cart.getPR_S_Name());
 			return cart;
@@ -153,6 +156,28 @@ public class Backend {
 			return "Artikel XY wurde aus "+ cart_stat_newCart +" entfernt.";
 		}
 		return statusOverall;
+	}
+
+	public boolean switchShoppingCart(int ID) {
+		for (int i=0; i<PR_AL_shopCarts.size();i++) {
+			//Aktueller Warenkorb in ArrayList speichern!
+			if (PR_AL_shopCarts.get(i).getPR_F_I_ID()==PR_SC_SelectedShoppingCart.getPR_F_I_ID()) {
+				PR_AL_shopCarts.set(i,PR_SC_SelectedShoppingCart);
+				//Selektierter Warenkorb aus der ArrayList ziehen!
+				for (int j = 0; j <PR_AL_shopCarts.size(); j++) {
+					if (PR_AL_shopCarts.get(j).getPR_F_I_ID()==ID) {
+						PR_SC_SelectedShoppingCart=PR_AL_shopCarts.get(j);
+						refresh();
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public int getPR_I_ShoppingCartCounter() {
+		return PR_I_ShoppingCartCounter++;
 	}
 
 }
