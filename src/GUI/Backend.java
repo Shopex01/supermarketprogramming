@@ -326,6 +326,13 @@ public class Backend {
 		PR_D_DailyOverallSellValue += Value;
 	}
 
+	public String addToDailyTakings(){
+		if(PR_D_DailyOverallSellValue==0){
+			return "0,00EUR";
+		}
+		return PR_F_DF_DoubleFormat.format(PR_D_DailyOverallSellValue)+"EUR";
+	}
+
 	public double getPR_D_DailyOverallSellValue() {
 		return PR_D_DailyOverallSellValue;
 	}

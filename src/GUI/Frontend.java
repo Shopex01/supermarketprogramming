@@ -50,7 +50,10 @@ public class Frontend extends JFrame {
 
         JLayeredPane TShoppingCartListLayer = new JLayeredPane();
         ScrollPane scrollPane_Status = new ScrollPane();
+
         JTextArea TShoppingCartListLayer_TA_ShoppingCartValue = new JTextArea(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
+        JTextArea TShoppingCartListLayer_TA_DailyTakings = new JTextArea(TBackend.addToDailyTakings());
+
         Choice TShoppingCartListLayer_Choice = new Choice();
         TextField textField_Status = new TextField();
         JScrollPane scrollPane_1 = new JScrollPane();
@@ -64,7 +67,7 @@ public class Frontend extends JFrame {
         JTextField textField = new JTextField();
         JTextArea TShoppingCartLayer_TA_ShoppingCartValue = new JTextArea(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
         JScrollPane scrollPane_Warenkorb = new JScrollPane();
-        JLabel label_WarenkorbTab_Gutschein = new JLabel("Gutscheincode");
+        JLabel label_WarenkorbTab_Gutschein = new JLabel("Tageseinnahmen");
         JButton TShoppingCartListLayer_B_PayCurrentShoppingCart = new JButton("Warenkorb bezahlen");
 
         //GUI-Settings --------------------------------------------------------------------------@@@@@
@@ -252,8 +255,15 @@ public class Frontend extends JFrame {
         TTabbedPane.addTab("Warenkorb", null, TShoppingCartLayer, null);
 
         textField.setBounds(370, 271, 149, 20);
-        TShoppingCartLayer.add(textField);
+        //TShoppingCartLayer.add(textField);
+        TShoppingCartLayer.add(TShoppingCartListLayer_TA_DailyTakings);
+        TShoppingCartListLayer_TA_DailyTakings.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        TShoppingCartListLayer_TA_DailyTakings.setEditable(false);
         textField.setColumns(10);
+
+        TShoppingCartListLayer_TA_DailyTakings.setBounds(387, 269, 132, 22);
+        TShoppingCartListLayer_TA_DailyTakings.setForeground(new Color(0, 255, 0));
+        TShoppingCartListLayer_TA_DailyTakings.setBackground(new Color(0, 0, 0));
 
         TShoppingCartLayer_TA_ShoppingCartValue.setForeground(new Color(0, 255, 0));
         TShoppingCartLayer_TA_ShoppingCartValue.setBackground(new Color(0, 0, 0));
@@ -314,7 +324,7 @@ public class Frontend extends JFrame {
                 TProductLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
                 TShoppingCartListLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
                 TShoppingCartLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
-
+                TShoppingCartListLayer_TA_DailyTakings.setText(TBackend.addToDailyTakings());
             }
         });
 
