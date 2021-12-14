@@ -23,6 +23,16 @@ public class ShoppingCart {
         this.PR_F_I_ID = PR_F_I_ID;
     }
 
+    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name, int PR_F_I_ID, ArrayList<ShoppingItem> PR_LSI_ShoppingCart) {
+        this.PR_LSI_ShoppingCart = PR_LSI_ShoppingCart;
+        this.PR_SCE_ShoppingCartType = PR_SCE_ShoppingCartType;
+        this.PR_S_Name = PR_S_Name;
+        this.PR_F_I_ID = PR_F_I_ID;
+    }
+    public ShoppingCart(ShoppingCart shoppingCart) {
+        this(shoppingCart.PR_SCE_ShoppingCartType,shoppingCart.PR_S_Name,shoppingCart.PR_F_I_ID,shoppingCart.PR_LSI_ShoppingCart);
+    }
+
     public String getPR_S_Name() {
 		return PR_S_Name;
 	}
@@ -70,20 +80,24 @@ public class ShoppingCart {
     }
 
     public String getPR_LSI_ShoppingCartOverallValue() {
+        return getPR_LSI_ShoppingCartOverallValueDouble() +"EUR";
+    }
+
+    public double getPR_LSI_ShoppingCartOverallValueDouble() {
         if (PR_LSI_ShoppingCart.isEmpty())
         {
-            return "0.00EUR";
+            return 0;
         }
         else {
-            Double OValue = (double) 0;
+            double OValue = (double) 0;
             for (ShoppingItem i: PR_LSI_ShoppingCart) {
                 if (PR_SCE_ShoppingCartType==ShoppingCartEnumeration.EMPLOYEE) {
-                    OValue += i.getPR_G_Item().getPR_F_BD_purchasevalue();
+                    OValue += i.getPR_G_Item().getPR_F_BD_purchasevalue()*i.getPR_I_Amount();
                 } else {
-                    OValue += i.getPR_G_Item().getPR_F_BD_sellvalue();
+                    OValue += i.getPR_G_Item().getPR_F_BD_sellvalue()*i.getPR_I_Amount();
                 }
             }
-            return OValue +"EUR";
+            return OValue;
         }
     }
 
@@ -94,4 +108,13 @@ public class ShoppingCart {
     public int getPR_F_I_ID() {
         return PR_F_I_ID;
     }
+
+    public ArrayList<ShoppingItem> getPR_LSI_ShoppingCart() {
+        return PR_LSI_ShoppingCart;
+    }
+
+    public void setPR_LSI_ShoppingCart(ArrayList<ShoppingItem> PR_LSI_ShoppingCart) {
+        this.PR_LSI_ShoppingCart = PR_LSI_ShoppingCart;
+    }
+
 }

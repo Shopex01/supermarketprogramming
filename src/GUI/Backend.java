@@ -3,10 +3,13 @@ package GUI;
 import Objects.Goods.Good;
 import Objects.ShoppingCart.ShoppingCart;
 import Objects.ShoppingCart.ShoppingCartEnumeration;
+import Objects.ShoppingCart.ShoppingItem;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static Objects.Goods.GoodCategoryEnumerations.*;
 import static Objects.Goods.GoodCategoryEnumerations.OTHER;
@@ -16,7 +19,7 @@ public class Backend {
 
 	protected static final DefaultTableModel model_wListe = new DefaultTableModel(new String[] {"ID","Warenkorbname", "Warenkorbart", "Preis"}, 0);
 	protected static final DefaultTableModel model_pListe = new DefaultTableModel(new String[] {"ID", "Kategorie","Produkt", "Preis","Weitere Eigenschaft"}, 0);
-	protected static final DefaultTableModel model_warenkorb = new DefaultTableModel(new String[] {"Artikel", "Menge", "Preis"}, 0);
+	protected static final DefaultTableModel model_warenkorb = new DefaultTableModel(new String[] {"ID","Artikel", "Menge", "Preis"}, 0);
 
 	private static ArrayList<ShoppingCart> PR_AL_shopCarts;
 	private static ArrayList<Good> PR_AL_Goods;
@@ -54,7 +57,7 @@ public class Backend {
 
 	private void refresh(){
 		refreshGoodsTable(); //Refresh Produktliste
-		refreshShoppingCartTable(); //Refresh Warenkorb
+		refreshShoppingCartItemTable(); //Refresh Warenkorb
 	}
 
 	private void refreshGoodsTable() {
@@ -88,10 +91,30 @@ public class Backend {
 				}
 			}
 		}
+		refreshShoppingCartTable();
+	}
+
+	private void refreshShoppingCartItemTable() {
+		int j = model_warenkorb.getRowCount();
+		for(int i=0;i<j;i++){
+			model_warenkorb.removeRow(0);
+		}
+		for (ShoppingItem SI: PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
+			double TPrice = (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()==ShoppingCartEnumeration.EMPLOYEE) ? SI.getPR_G_Item().getPR_F_BD_purchasevalue() : SI.getPR_G_Item().getPR_F_BD_sellvalue();
+			model_warenkorb.addRow(new Object[]{SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_I_Amount(),Double.toString(SI.getPR_I_Amount()*TPrice)});
+		}
+		refreshShoppingCartTable();
 	}
 
 	private void refreshShoppingCartTable() {
-
+		saveCurrentShoppingCartInList();
+		int j = model_wListe.getRowCount();
+		for(int i=0;i<j;i++){
+			model_wListe.removeRow(0);
+		}
+		for (ShoppingCart SC: PR_AL_shopCarts) {
+			model_wListe.addRow(new Object[]{SC.getPR_F_I_ID(),SC.getPR_S_Name(),SC.getPR_SCE_ShoppingCartTypeString(),SC.getPR_LSI_ShoppingCartOverallValue()});
+		}
 	}
 
 	private void initialize() {
@@ -115,6 +138,15 @@ public class Backend {
 		PR_AL_Goods.add(new Good(10, HOUSEHOLD, "Zahncreme", 0.50, 1.99, RECYCLING));
 		PR_AL_Goods.add(new Good(11, OTHER, "DVD Actionfilm", 0.99, 8.99, FSK));
 		PR_AL_Goods.add(new Good(12, OTHER, "DVD Familienfilm", 0.89, 7.99, FSK));
+	}
+
+	private Good getGoodfromArray(int TID) {
+		for (Good G: PR_AL_Goods) {
+			if (G.getPR_F_I_number()==TID) {
+				return G;
+			}
+		}
+		return null;
 	}
 
 	public DefaultTableModel getModel() {
@@ -142,35 +174,45 @@ public class Backend {
 			cart_stat_newCart = (cart.getPR_S_Name());
 			return cart;
 		} else {
-			stat_newCart=false;
 			return null;
 		}
 	}
 
 	public String statusOverall(){
 		if(stat_newCart){
+			stat_newCart=false;
 			return "Ihr Warenkorb: "+ cart_stat_newCart +" wurde erstellt.";
 		} else if(stat_newProdInCart){
-			return "Artikel XY wurde in den Warenkorb "+ cart_stat_newCart +" hinzugefügt.";
+			stat_newProdInCart=false;
+			return "Artikel "+cart_stat_newProd+" wurde in den Warenkorb "+ cart_stat_newCart +" hinzugefügt.";
 		} else if(stat_deleteProdFromCart){
-			return "Artikel XY wurde aus "+ cart_stat_newCart +" entfernt.";
+			stat_deleteProdFromCart=false;
+			return "Artikel "+cart_stat_deleteProd+" wurde aus "+ cart_stat_newCart +" entfernt.";
 		}
 		return statusOverall;
 	}
 
 	public boolean switchShoppingCart(int ID) {
+		if (saveCurrentShoppingCartInList()) {
+			//Selektierter Warenkorb aus der ArrayList ziehen!
+			for (ShoppingCart pr_al_shopCart : PR_AL_shopCarts) {
+				if (pr_al_shopCart.getPR_F_I_ID() == ID) {
+					PR_SC_SelectedShoppingCart = pr_al_shopCart;
+					refresh();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	public boolean saveCurrentShoppingCartInList() {
 		for (int i=0; i<PR_AL_shopCarts.size();i++) {
 			//Aktueller Warenkorb in ArrayList speichern!
-			if (PR_AL_shopCarts.get(i).getPR_F_I_ID()==PR_SC_SelectedShoppingCart.getPR_F_I_ID()) {
-				PR_AL_shopCarts.set(i,PR_SC_SelectedShoppingCart);
-				//Selektierter Warenkorb aus der ArrayList ziehen!
-				for (int j = 0; j <PR_AL_shopCarts.size(); j++) {
-					if (PR_AL_shopCarts.get(j).getPR_F_I_ID()==ID) {
-						PR_SC_SelectedShoppingCart=PR_AL_shopCarts.get(j);
-						refresh();
-						return true;
-					}
-				}
+			if (PR_AL_shopCarts.get(i).getPR_F_I_ID() == PR_SC_SelectedShoppingCart.getPR_F_I_ID()) {
+				PR_AL_shopCarts.set(i, PR_SC_SelectedShoppingCart);
+				return true;
 			}
 		}
 		return false;
@@ -180,4 +222,91 @@ public class Backend {
 		return PR_I_ShoppingCartCounter++;
 	}
 
+	public void addProductToShoppingCart(Good TGood, int TAmount) {
+		if (TAmount!=0) {
+			for (ShoppingItem SI:PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
+				if (SI.getPR_G_Item()==TGood) {
+					if (ControlShoppingCartValue(SI.getPR_G_Item().getPR_F_I_number(),TAmount,2)) {
+						SI.setPR_I_Amount(SI.getPR_I_Amount()+TAmount);
+						refreshShoppingCartItemTable();
+						stat_newProdInCart=true;
+						cart_stat_newProd=TGood.getPR_F_S_name();
+					} else {
+						JOptionPane.showMessageDialog(null,"Der Warenwert des Warenkorbs überschreitet die Spar-Korb - Einstellung (maximal 50€)","Produkt hinzufügen fehlgeschlagen!",JOptionPane.WARNING_MESSAGE);
+					}
+					return;
+
+				}
+			}
+			if (ControlShoppingCartValue(TGood.getPR_F_I_number(),TAmount,1)) {
+				PR_SC_SelectedShoppingCart.addShoppingItem(new ShoppingItem(TGood,TAmount));
+				refreshShoppingCartItemTable();
+				stat_newProdInCart=true;
+				cart_stat_newProd=TGood.getPR_F_S_name();
+			} else {
+				JOptionPane.showMessageDialog(null,"Der Warenwert des Warenkorbs überschreitet die Spar-Korb - Einstellung (maximal 50€)","Produkt hinzufügen fehlgeschlagen!",JOptionPane.WARNING_MESSAGE);
+			}
+		}
+	}
+
+	public Good getGood(int TID) {
+		for (Good g: PR_AL_Goods) {
+			if (g.getPR_F_I_number()==TID) {
+				return g;
+			}
+		}
+		return null;
+	}
+
+	public void changeShoppingItemAmount(int TSINumber, int TAmount){
+		if (ControlShoppingCartValue(TSINumber,TAmount,3)) {
+			PR_SC_SelectedShoppingCart.changeShoppingItemAmount(TSINumber,TAmount);
+			refreshShoppingCartItemTable();
+		} else {
+			JOptionPane.showMessageDialog(null,"Der Warenwert des Warenkorbs überschreitet die Spar-Korb - Einstellung (maximal 50€)","Produkt hinzufügen fehlgeschlagen!",JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	public void deleteShoppingItem(int TSINumber){
+		PR_SC_SelectedShoppingCart.removeShoppingItem(TSINumber);
+		stat_deleteProdFromCart = true;
+		cart_stat_deleteProd = Objects.requireNonNull(getGoodfromArray(TSINumber)).getPR_F_S_name();
+		cart_stat_newCart = PR_SC_SelectedShoppingCart.getPR_S_Name();
+		refreshShoppingCartItemTable();
+	}
+
+	private boolean ControlShoppingCartValue(int TSINumber, int TAmount, int TOperation) {
+		if (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()==ShoppingCartEnumeration.SAVING) {
+			for (Good G : PR_AL_Goods) {
+				if (G.getPR_F_I_number() == TSINumber) {
+					ShoppingCart TShoppingCart = new ShoppingCart(ShoppingCartEnumeration.SAVING,"Clone",-1);
+					for (ShoppingItem SI: PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
+						TShoppingCart.addShoppingItem(new ShoppingItem(new Good(SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_GCE_category(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_G_Item().getPR_F_BD_purchasevalue(),SI.getPR_G_Item().getPR_F_BD_sellvalue(),SI.getPR_G_Item().getPR_F_GPE_property()),SI.getPR_I_Amount()));
+					}
+					switch (TOperation) {
+						case 1 -> { //Hinzufügen von Item
+							TShoppingCart.addShoppingItem(new ShoppingItem(G, TAmount));
+						}
+						case 2 -> { //Änderung der Anzahl eines Items (CurrentAmount + TAmount)
+							for (ShoppingItem SI : TShoppingCart.getPR_LSI_ShoppingCart()) {
+								if (SI.getPR_G_Item().getPR_F_I_number() == G.getPR_F_I_number()) {
+									SI.setPR_I_Amount(SI.getPR_I_Amount() + TAmount);
+								}
+							}
+						}
+						case 3 -> { //Änderung der Anzahl eines Items (CurrentAmount = TAmount)
+							for (ShoppingItem SI : TShoppingCart.getPR_LSI_ShoppingCart()) {
+								if (SI.getPR_G_Item().getPR_F_I_number() == G.getPR_F_I_number()) {
+									SI.setPR_I_Amount(SI.getPR_I_Amount());
+								}
+							}
+						}
+					}
+					return !(TShoppingCart.getPR_LSI_ShoppingCartOverallValueDouble() > 50);
+				}
+			}
+			return false;
+		}
+		return true;
+	}
 }
