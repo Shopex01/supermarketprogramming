@@ -308,12 +308,13 @@ public class Frontend extends JFrame {
         TShoppingCartListLayer_B_PayCurrentShoppingCart.setBounds(10, 269, 175, 22);
         TShoppingCartLayer.add(TShoppingCartListLayer_B_PayCurrentShoppingCart);
         TShoppingCartListLayer_B_PayCurrentShoppingCart.addActionListener(e -> {
-            if (JOptionPane.showOptionDialog(null,"Wollen sie den Warenkorb wirklich bezahlen?","Warenkorb bezahlenm",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==0) {
+            if (JOptionPane.showOptionDialog(null,"Wollen sie den Warenkorb wirklich bezahlen?","Warenkorb bezahlen",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==0) {
                 TBackend.increasePR_D_DailyOverallSellValue(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValueDouble());
                 TBackend.removeCurrentShoppingCart();
                 TProductLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
                 TShoppingCartListLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
                 TShoppingCartLayer_TA_ShoppingCartValue.setText(TBackend.getPR_SC_SelectedShoppingCart().getPR_LSI_ShoppingCartOverallValue());
+
             }
         });
 

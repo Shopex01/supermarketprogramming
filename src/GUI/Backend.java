@@ -7,8 +7,8 @@ import Objects.ShoppingCart.ShoppingItem;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static Objects.Goods.GoodCategoryEnumerations.*;
@@ -35,6 +35,7 @@ public class Backend {
 	protected static String cart_stat_newProd = "";
 	protected static String cart_stat_deleteProd = "";
 	private int PR_I_ShoppingCartCounter;
+	public static final DecimalFormat PR_F_DF_DoubleFormat = new DecimalFormat("0.00");
 
 	private static boolean stat_newProdInCart =false;
 	private static boolean stat_deleteProdFromCart=false;
@@ -70,25 +71,25 @@ public class Backend {
 			case ECONOMIC -> {
 				for(Good G: PR_AL_Goods){
 					if (G.getPR_F_I_number()!=4 && G.getPR_F_I_number()!=8) {
-						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_sellvalue(),G.getPR_F_GPE_propertyString()});
+						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
 					}
 				}
 			}
 			case U18 -> {
 				for(Good G: PR_AL_Goods){
 					if (G.getPR_F_I_number()!=6 && G.getPR_F_I_number()!=11) {
-						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_sellvalue(),G.getPR_F_GPE_propertyString()});
+						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
 					}
 				}
 			}
 			case EMPLOYEE -> {
 				for(Good G: PR_AL_Goods){
-					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_purchasevalue(),G.getPR_F_GPE_propertyString()});
+					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_purchasevalue()),G.getPR_F_GPE_propertyString()});
 				}
 			}
 			case STANDARD,SAVING -> {
 				for(Good G: PR_AL_Goods){
-					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),G.getPR_F_BD_sellvalue(),G.getPR_F_GPE_propertyString()});
+					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
 				}
 			}
 		}
@@ -102,7 +103,7 @@ public class Backend {
 		}
 		for (ShoppingItem SI: PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
 			double TPrice = (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()==ShoppingCartEnumeration.EMPLOYEE) ? SI.getPR_G_Item().getPR_F_BD_purchasevalue() : SI.getPR_G_Item().getPR_F_BD_sellvalue();
-			model_warenkorb.addRow(new Object[]{SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_I_Amount(),Double.toString(SI.getPR_I_Amount()*TPrice)});
+			model_warenkorb.addRow(new Object[]{SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_I_Amount(),PR_F_DF_DoubleFormat.format(SI.getPR_I_Amount()*TPrice)});
 		}
 		refreshShoppingCartTable();
 	}
@@ -114,7 +115,7 @@ public class Backend {
 			model_wListe.removeRow(0);
 		}
 		for (ShoppingCart SC: PR_AL_shopCarts) {
-			model_wListe.addRow(new Object[]{SC.getPR_F_I_ID(),SC.getPR_S_Name(),SC.getPR_SCE_ShoppingCartTypeString(),SC.getPR_LSI_ShoppingCartOverallValue()});
+			model_wListe.addRow(new Object[]{SC.getPR_F_I_ID(),SC.getPR_S_Name(),SC.getPR_SCE_ShoppingCartTypeString(),PR_F_DF_DoubleFormat.format(SC.getPR_LSI_ShoppingCartOverallValueDouble())});
 		}
 	}
 
