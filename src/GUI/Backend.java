@@ -25,6 +25,7 @@ public class Backend {
 	private static ArrayList<Good> PR_AL_Goods;
 
 	private ShoppingCart PR_SC_SelectedShoppingCart;
+	private double PR_D_DailyOverallSellValue = 0;
 
 	private String status_produkt = "";
 	private String status_warenkorb = "";
@@ -308,5 +309,23 @@ public class Backend {
 			return false;
 		}
 		return true;
+	}
+
+	public void removeCurrentShoppingCart() {
+		PR_AL_shopCarts.removeIf(SC -> SC == PR_SC_SelectedShoppingCart);
+		if(PR_AL_shopCarts.size()==0) {
+			PR_SC_SelectedShoppingCart = createCart(ShoppingCartEnumeration.STANDARD,"Standard-Warenkorb",getPR_I_ShoppingCartCounter());
+		} else {
+			PR_SC_SelectedShoppingCart = PR_AL_shopCarts.get(0);
+		}
+		refresh();
+	}
+
+	public void increasePR_D_DailyOverallSellValue(double Value){
+		PR_D_DailyOverallSellValue += Value;
+	}
+
+	public double getPR_D_DailyOverallSellValue() {
+		return PR_D_DailyOverallSellValue;
 	}
 }
