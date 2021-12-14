@@ -1,7 +1,8 @@
 package Objects.ShoppingCart;
 
+import GUI.Backend;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShoppingCart {
     private final int PR_F_I_ID;
@@ -80,7 +81,7 @@ public class ShoppingCart {
     }
 
     public String getPR_LSI_ShoppingCartOverallValue() {
-        return getPR_LSI_ShoppingCartOverallValueDouble() +"EUR";
+        return Backend.PR_F_DF_DoubleFormat.format(getPR_LSI_ShoppingCartOverallValueDouble()) +"EUR";
     }
 
     public double getPR_LSI_ShoppingCartOverallValueDouble() {
