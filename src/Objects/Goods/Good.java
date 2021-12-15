@@ -1,15 +1,12 @@
 package Objects.Goods;
 
-import java.util.Currency;
-
 public class Good {
 
     private final int PR_F_I_number; //Good-ID
     private final GoodCategoryEnumerations PR_F_GCE_category; //Good-Category
     private final String PR_F_S_name; //Good-Name
-    private final Double PR_F_BD_purchasevalue; //Good-PurchasePrice
-    private final Double PR_F_BD_sellvalue; //Good-SellPrice
-    private final Currency PR_F_C_currency; //Good-Currency
+    private final Double PR_F_D_purchasevalue; //Good-PurchasePrice
+    private final Double PR_F_D_sellvalue; //Good-SellPrice
     private final GoodPropertyEnumerations PR_F_GPE_property; //Good-Property
     private final String PR_F_GPE_propertyValue;
 
@@ -17,11 +14,10 @@ public class Good {
         PR_F_I_number = T_I_Num;
         PR_F_GCE_category = T_GCE_Cat;
         PR_F_S_name = T_S_Name;
-        PR_F_BD_purchasevalue = T_BD_PPrice;
-        PR_F_BD_sellvalue = T_BD_SPrice;
+        PR_F_D_purchasevalue = T_BD_PPrice;
+        PR_F_D_sellvalue = T_BD_SPrice;
         PR_F_GPE_property = T_GPE_Prop;
         PR_F_GPE_propertyValue = T_GPE_PropValue;
-        PR_F_C_currency = Currency.getInstance("EUR");
     }
 
     public int getPR_F_I_number() {
@@ -37,15 +33,11 @@ public class Good {
     }
 
     public Double getPR_F_BD_purchasevalue() {
-        return PR_F_BD_purchasevalue;
+        return PR_F_D_purchasevalue;
     }
 
     public Double getPR_F_BD_sellvalue() {
-        return PR_F_BD_sellvalue;
-    }
-
-    public Currency getPR_F_C_currency() {
-        return PR_F_C_currency;
+        return PR_F_D_sellvalue;
     }
 
     public GoodPropertyEnumerations getPR_F_GPE_property() {
