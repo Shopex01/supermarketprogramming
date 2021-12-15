@@ -36,18 +36,27 @@ public class Backend {
 	private static boolean PR_S_B_StatusDeleteShoppingItem=false;
 	private static boolean PR_S_B_StatusNewCart = false;
 
+	/**
+	 * Erstellung des Backend-Objekts: Initialisierung, Erstellung aller Produkte in einer Liste, Reload der Models/Tabellen
+	 */
 	public Backend() {
 		initialize();
 		allGoods();
 		refresh();
 	}
 
+	/**
+	 * Initialisierung: Erstellung der Einkaufswagen-Liste, Einkaufswagen-ID-Counter initialisieren, Standard-Warenkorb erstellen und als aktuellen Warenkorb setzen
+	 */
 	private void initialize() {
 		PR_S_AL_ShoppingCarts = new ArrayList<>();
 		PR_I_ShoppingCartCounter = 0;
 		PR_SC_SelectedShoppingCart = createCart(ShoppingCartEnumeration.STANDARD,"Standard-Warenkorb",getPR_I_ShoppingCartCounter());
 	}
 
+	/**
+	 * Erstellung der Produkte & Einfügen in der Produkt-Liste (nicht Frontend-Table)
+	 */
 	private void allGoods(){
 		PR_S_AL_Goods = new ArrayList<>();
 
@@ -65,11 +74,17 @@ public class Backend {
 		PR_S_AL_Goods.add(new Good(12, OTHER, "DVD Familienfilm", 0.89, 7.99, FSK,"12"));
 	}
 
+	/**
+	 * Aktualisierung der Produkt-Tabelle/Model & Warenkorb-Tabelle/Model
+	 */
 	private void refresh(){
 		refreshGoodsTable(); //Refresh Produktliste
 		refreshShoppingCartItemTable(); //Refresh Warenkorb
 	}
 
+	/**
+	 * Aktualisierung der Produkt-Tabelle + Aufruf refreshShoppingCartTable()
+	 */
 	private void refreshGoodsTable() {
 		int j = PT_SF_DTM_ProductListModel.getRowCount();
 		for(int i=0;i<j;i++){
@@ -104,6 +119,9 @@ public class Backend {
 		refreshShoppingCartTable();
 	}
 
+	/**
+	 * Aktualisierung der Warenkorb-Tabelle + Aufruf der refreshShoppingCartTable()
+	 */
 	private void refreshShoppingCartItemTable() {
 		int j = PT_SF_DTM_ShoppingCartModel.getRowCount();
 		for(int i=0;i<j;i++){
@@ -116,6 +134,9 @@ public class Backend {
 		refreshShoppingCartTable();
 	}
 
+	/**
+	 * Aktualisierung der Einkaufswagen-Liste - Tabelle
+	 */
 	private void refreshShoppingCartTable() {
 		saveCurrentShoppingCartInList();
 		int j = PT_SF_DTM_ShoppingCartListModel.getRowCount();
@@ -127,6 +148,11 @@ public class Backend {
 		}
 	}
 
+	/**
+	 * Gibt das Produkt-Objekt aus dem Produkt-Array aus
+	 * @param TID Produkt-ID
+	 * @return Produkt (Typ: Good)
+	 */
 	private Good getGoodfromGoodArray(int TID) {
 		for (Good G: PR_S_AL_Goods) {
 			if (G.getPR_F_I_number()==TID) {
@@ -136,10 +162,21 @@ public class Backend {
 		return null;
 	}
 
+	/**
+	 * Gibt den aktuell ausgewählter Einkaufswagen aus!
+	 * @return aktuell ausgewählter Einkaufswagen (Typ: ShoppingCart)
+	 */
 	public ShoppingCart getPR_SC_SelectedShoppingCart() {
 		return PR_SC_SelectedShoppingCart;
 	}
 
+	/**
+	 * Erstellt einen Einkaufswagen und gibt diese aus!
+	 * @param category Einkaufswagen-Kategorie
+	 * @param name Einkaufswagen-Name
+	 * @param ID Einkaufswagen-ID
+	 * @return Einkaufswagen-Objekt (Typ: ShoppingCart)
+	 */
 	protected static ShoppingCart createCart(ShoppingCartEnumeration category, String name, int ID) {
 		if(name != null && !name.equals("")) {
 			ShoppingCart cart = new ShoppingCart(category, name,ID);
@@ -153,6 +190,10 @@ public class Backend {
 		}
 	}
 
+	/**
+	 * Gibt den Status-String für die Status-Meldung (GUI Textfield unten) aus!
+	 * @return Status-String (Typ: String)
+	 */
 	public String statusOverall(){
 		if(PR_S_B_StatusNewCart){
 			PR_S_B_StatusNewCart=false;
@@ -167,6 +208,10 @@ public class Backend {
 		return PT_S_StatusOverall;
 	}
 
+	/**
+	 * Wechselt den Einkaufswagen anhand der Einkaufswagen-ID
+	 * @param ID neue Einkaufswagen-ID
+	 */
 	public void switchShoppingCart(int ID) {
 		if (saveCurrentShoppingCartInList()) {
 			//Selektierter Warenkorb aus der ArrayList ziehen!
@@ -179,7 +224,10 @@ public class Backend {
 		}
 	}
 
-
+	/**
+	 * Speichert den aktuell ausgewählten Einkaufswagen in den Einkaufswagen-Array (nicht Model)
+	 * @return Boolean-Wert (Wurde gespeichert oder nicht)
+	 */
 	public boolean saveCurrentShoppingCartInList() {
 		for (int i=0; i<PR_S_AL_ShoppingCarts.size();i++) {
 			//Aktueller Warenkorb in ArrayList speichern!
@@ -191,10 +239,19 @@ public class Backend {
 		return false;
 	}
 
+	/**
+	 * Gibt den Einkaufswagen-Counter aus und erhöht diese um 1!
+	 * @return Einkaufswagen-Counter
+	 */
 	public int getPR_I_ShoppingCartCounter() {
 		return PR_I_ShoppingCartCounter++;
 	}
 
+	/**
+	 * Fügt ein Produkt mit Anzahl in den Einkaufswagen hinzu!
+	 * @param TGood Produkt
+	 * @param TAmount Anzahl
+	 */
 	public void addProductToShoppingCart(Good TGood, int TAmount) {
 		if (TAmount!=0) {
 			for (ShoppingItem SI:PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
@@ -222,6 +279,10 @@ public class Backend {
 		}
 	}
 
+	/**
+	 * Löscht ein ShoppingItem aus dem aktuell ausgewähltem Einkaufskorb anhand der Produkt-ID
+	 * @param TSINumber Produkt-ID
+	 */
 	public void deleteShoppingItem(int TSINumber){
 		PR_SC_SelectedShoppingCart.removeShoppingItem(TSINumber);
 		PR_S_B_StatusDeleteShoppingItem = true;
@@ -230,6 +291,11 @@ public class Backend {
 		refreshShoppingCartItemTable();
 	}
 
+	/**
+	 * Ändert die Anzahl eines ShoppingItems aus dem aktuell ausgewähltem Einkaufskorb anhand der Produkt-ID
+	 * @param TSINumber Produkt-ID
+	 * @param TAmount  neue Anzahl
+	 */
 	public void changeShoppingItemAmount(int TSINumber, int TAmount){
 		if (ControlShoppingCartValue(TSINumber,TAmount,3)) {
 			PR_SC_SelectedShoppingCart.changeShoppingItemAmount(TSINumber,TAmount);
@@ -239,6 +305,9 @@ public class Backend {
 		}
 	}
 
+	/**
+	 * Entfernt das aktuell ausgewählte ShoppingCart und wählt den ShoppingCart aus der Liste auf Position 0 hinzu (wenn keines vorhanden, wird ein neuer Standard-Warenkorb erstellt)
+	 */
 	public void removeCurrentShoppingCart() {
 		PR_S_AL_ShoppingCarts.removeIf(SC -> SC == PR_SC_SelectedShoppingCart);
 		if(PR_S_AL_ShoppingCarts.size()==0) {
@@ -249,6 +318,13 @@ public class Backend {
 		refresh();
 	}
 
+	/**
+	 * Überprüft den Warenwert des aktuellen Warenkorbs (nur bei Kategorie: SAVING), ob der Warenwert 50€ überschreitet!
+	 * @param TSINumber Produkt-ID (das hinzugefügt wird)
+	 * @param TAmount Anzahl des Produktes
+	 * @param TOperation 1: Ein Produkt wird in der Liste hinzugefügt (Produkt vorher nicht im Warenkorb); 2: Anzahl eines bereits vorhandenen Produktes ändern (Doppelklick Produkt in der Produkt-Liste; Addieren der Anzahl); 3: Anzahl eines bereits vorhandenen Produktes ändern (Doppelklick Produkt in der Warenkorb-Liste; Ersetzen der Anzahl);
+	 * @return Boolean-Wert, ob der Warenkorbwert 50€ überschreitet oder nicht (True: keine Überschreitung, False: Überschreitung)
+	 */
 	private boolean ControlShoppingCartValue(int TSINumber, int TAmount, int TOperation) {
 		if (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()==ShoppingCartEnumeration.SAVING) {
 			for (Good G : PR_S_AL_Goods) {
@@ -282,6 +358,11 @@ public class Backend {
 		return true;
 	}
 
+	/**
+	 * Gibt das Produkt anhand der Produkt-ID aus dem Produkt-Array aus!
+	 * @param TID Produkt-ID
+	 * @return Produkt (Typ: Good)
+	 */
 	public Good getGood(int TID) {
 		for (Good g: PR_S_AL_Goods) {
 			if (g.getPR_F_I_number()==TID) {
@@ -291,10 +372,18 @@ public class Backend {
 		return null;
 	}
 
+	/**
+	 * Erhöht die Tageseinnahmen!
+	 * @param Value Wert, um der sich die Tageseinnahmen erhöht werden soll!
+	 */
 	public void increasePR_D_DailyOverallSellValue(double Value){
 		PR_D_DailyOverallSellValue += Value;
 	}
 
+	/**
+	 * Gibt die Tageseinnahmen formatiert als String aus!
+	 * @return Tageseinnahmen (Typ: String)
+	 */
 	public String addToDailyTakings(){
 		if(PR_D_DailyOverallSellValue==0){
 			return "0,00EUR";

@@ -1,10 +1,14 @@
 package GUI;
 
 import Objects.ShoppingCart.ShoppingCartEnumeration;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.Objects;
 import javax.swing.table.TableColumnModel;
 
 
@@ -84,6 +88,11 @@ public class Frontend extends JFrame {
         TContentPane.setLayout(null);
         TTabbedPane.setBounds(0, 0, 534, 325);
         TContentPane.add(TTabbedPane);
+        try {
+            setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/Icon.png"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //Tab "Produktseite"
         TTabbedPane.addTab("Produktseite", null, TLayeredPane_GoodsTab, null);
