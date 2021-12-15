@@ -255,7 +255,6 @@ public class Frontend extends JFrame {
         TTabbedPane.addTab("Warenkorb", null, TShoppingCartLayer, null);
 
         textField.setBounds(370, 271, 149, 20);
-        //TShoppingCartLayer.add(textField);
         TShoppingCartLayer.add(TShoppingCartListLayer_TA_DailyTakings);
         TShoppingCartListLayer_TA_DailyTakings.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         TShoppingCartListLayer_TA_DailyTakings.setEditable(false);
@@ -279,6 +278,8 @@ public class Frontend extends JFrame {
         table_Warenkorb.setShowGrid(false);
         table_Warenkorb.setShowHorizontalLines(false);
         table_Warenkorb.setShowVerticalLines(false);
+        table_Warenkorb.setAutoCreateRowSorter(true);
+
         tcmWarenkorb.removeColumn(tcmWarenkorb.getColumn(0));
         table_Warenkorb.addMouseListener(new MouseAdapter() {
             @Override

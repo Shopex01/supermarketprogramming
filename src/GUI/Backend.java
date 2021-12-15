@@ -1,6 +1,7 @@
 package GUI;
 
 import Objects.Goods.Good;
+import Objects.Goods.GoodPropertyEnumerations;
 import Objects.ShoppingCart.ShoppingCart;
 import Objects.ShoppingCart.ShoppingCartEnumeration;
 import Objects.ShoppingCart.ShoppingItem;
@@ -19,7 +20,7 @@ public class Backend {
 
 	protected static final DefaultTableModel model_wListe = new DefaultTableModel(new String[] {"ID","Warenkorbname", "Warenkorbart", "Preis"}, 0);
 	protected static final DefaultTableModel model_pListe = new DefaultTableModel(new String[] {"ID", "Kategorie","Produkt", "Preis","Weitere Eigenschaft"}, 0);
-	protected static final DefaultTableModel model_warenkorb = new DefaultTableModel(new String[] {"ID","Artikel", "Menge", "Preis"}, 0);
+	protected static final DefaultTableModel model_warenkorb = new DefaultTableModel(new String[] {"ID","Artikel", "Menge", "Preis", "Weitere Eigenschaft"}, 0);
 
 	private static ArrayList<ShoppingCart> PR_AL_shopCarts;
 	private static ArrayList<Good> PR_AL_Goods;
@@ -71,25 +72,25 @@ public class Backend {
 			case ECONOMIC -> {
 				for(Good G: PR_AL_Goods){
 					if (G.getPR_F_I_number()!=4 && G.getPR_F_I_number()!=8) {
-						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
+						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue())+"EUR",G.getPR_F_GPE_propertyString()+G.getPR_F_GPE_propertyValue()});
 					}
 				}
 			}
 			case U18 -> {
 				for(Good G: PR_AL_Goods){
 					if (G.getPR_F_I_number()!=6 && G.getPR_F_I_number()!=11) {
-						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
+						model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue())+"EUR",G.getPR_F_GPE_propertyString()+G.getPR_F_GPE_propertyValue()});
 					}
 				}
 			}
 			case EMPLOYEE -> {
 				for(Good G: PR_AL_Goods){
-					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_purchasevalue()),G.getPR_F_GPE_propertyString()});
+					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_purchasevalue())+"EUR",G.getPR_F_GPE_propertyString()+G.getPR_F_GPE_propertyValue()});
 				}
 			}
 			case STANDARD,SAVING -> {
 				for(Good G: PR_AL_Goods){
-					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue()),G.getPR_F_GPE_propertyString()});
+					model_pListe.addRow(new Object[]{G.getPR_F_I_number(), G.getPR_F_GCE_categoryString(), G.getPR_F_S_name(),PR_F_DF_DoubleFormat.format(G.getPR_F_BD_sellvalue())+"EUR",G.getPR_F_GPE_propertyString()+G.getPR_F_GPE_propertyValue()});
 				}
 			}
 		}
@@ -103,7 +104,7 @@ public class Backend {
 		}
 		for (ShoppingItem SI: PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
 			double TPrice = (PR_SC_SelectedShoppingCart.getPR_SCE_ShoppingCartType()==ShoppingCartEnumeration.EMPLOYEE) ? SI.getPR_G_Item().getPR_F_BD_purchasevalue() : SI.getPR_G_Item().getPR_F_BD_sellvalue();
-			model_warenkorb.addRow(new Object[]{SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_I_Amount(),PR_F_DF_DoubleFormat.format(SI.getPR_I_Amount()*TPrice)});
+			model_warenkorb.addRow(new Object[]{SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_I_Amount(),PR_F_DF_DoubleFormat.format(SI.getPR_I_Amount()*TPrice)+"EUR", SI.getPR_G_Item().getPR_F_GPE_propertyString()+SI.getPR_G_Item().getPR_F_GPE_propertyValue()});
 		}
 		refreshShoppingCartTable();
 	}
@@ -115,7 +116,7 @@ public class Backend {
 			model_wListe.removeRow(0);
 		}
 		for (ShoppingCart SC: PR_AL_shopCarts) {
-			model_wListe.addRow(new Object[]{SC.getPR_F_I_ID(),SC.getPR_S_Name(),SC.getPR_SCE_ShoppingCartTypeString(),PR_F_DF_DoubleFormat.format(SC.getPR_LSI_ShoppingCartOverallValueDouble())});
+			model_wListe.addRow(new Object[]{SC.getPR_F_I_ID(),SC.getPR_S_Name(),SC.getPR_SCE_ShoppingCartTypeString(),PR_F_DF_DoubleFormat.format(SC.getPR_LSI_ShoppingCartOverallValueDouble())+"EUR"});
 		}
 	}
 
@@ -128,18 +129,18 @@ public class Backend {
 	private void allGoods(){
 		PR_AL_Goods = new ArrayList();
 
-		PR_AL_Goods.add(new Good(1, FOOD, "Mineralwasser", 0.40, 0.89, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(2, FOOD, "Toastbrot", 0.50, 1.99, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(3, FOOD, "Butter", 0.39, 1.49, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(4, FOOD, "Wurst", 0.69, 1.99, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(5, FOOD, "Käse", 0.49, 1.29, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(6, FOOD, "Flasche Wein", 2.30, 6.99, EXPIRATIONDATE));
-		PR_AL_Goods.add(new Good(7, HOUSEHOLD, "Klobürste", 0.99, 4.99, RECYCLING));
-		PR_AL_Goods.add(new Good(8, HOUSEHOLD, "Plastikbesteck", 0.05, 0.69, RECYCLING));
-		PR_AL_Goods.add(new Good(9, HOUSEHOLD, "Putzlappen", 0.15, 1.19, RECYCLING));
-		PR_AL_Goods.add(new Good(10, HOUSEHOLD, "Zahncreme", 0.50, 1.99, RECYCLING));
-		PR_AL_Goods.add(new Good(11, OTHER, "DVD Actionfilm", 0.99, 8.99, FSK));
-		PR_AL_Goods.add(new Good(12, OTHER, "DVD Familienfilm", 0.89, 7.99, FSK));
+		PR_AL_Goods.add(new Good(1, FOOD, "Mineralwasser", 0.40, 0.89, EXPIRATIONDATE, "01.01.2030"));
+		PR_AL_Goods.add(new Good(2, FOOD, "Toastbrot", 0.50, 1.99, EXPIRATIONDATE, "10.01.2022"));
+		PR_AL_Goods.add(new Good(3, FOOD, "Butter", 0.39, 1.49, EXPIRATIONDATE, "31.06.2022"));
+		PR_AL_Goods.add(new Good(4, FOOD, "Wurst", 0.69, 1.99, EXPIRATIONDATE,"31.12.2021"));
+		PR_AL_Goods.add(new Good(5, FOOD, "Käse", 0.49, 1.29, EXPIRATIONDATE,"02.01.2022"));
+		PR_AL_Goods.add(new Good(6, FOOD, "Flasche Wein", 2.30, 6.99, EXPIRATIONDATE,"05.07.2026"));
+		PR_AL_Goods.add(new Good(7, HOUSEHOLD, "Klobürste", 0.99, 4.99, RECYCLING,"50%"));
+		PR_AL_Goods.add(new Good(8, HOUSEHOLD, "Plastikbesteck", 0.05, 0.69, RECYCLING,"80%"));
+		PR_AL_Goods.add(new Good(9, HOUSEHOLD, "Putzlappen", 0.15, 1.19, RECYCLING,"25%"));
+		PR_AL_Goods.add(new Good(10, HOUSEHOLD, "Zahncreme", 0.50, 1.99, RECYCLING,"10%"));
+		PR_AL_Goods.add(new Good(11, OTHER, "DVD Actionfilm", 0.99, 8.99, FSK,"16"));
+		PR_AL_Goods.add(new Good(12, OTHER, "DVD Familienfilm", 0.89, 7.99, FSK,"12"));
 	}
 
 	private Good getGoodfromArray(int TID) {
@@ -283,7 +284,7 @@ public class Backend {
 				if (G.getPR_F_I_number() == TSINumber) {
 					ShoppingCart TShoppingCart = new ShoppingCart(ShoppingCartEnumeration.SAVING,"Clone",-1);
 					for (ShoppingItem SI: PR_SC_SelectedShoppingCart.getPR_LSI_ShoppingCart()) {
-						TShoppingCart.addShoppingItem(new ShoppingItem(new Good(SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_GCE_category(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_G_Item().getPR_F_BD_purchasevalue(),SI.getPR_G_Item().getPR_F_BD_sellvalue(),SI.getPR_G_Item().getPR_F_GPE_property()),SI.getPR_I_Amount()));
+						TShoppingCart.addShoppingItem(new ShoppingItem(new Good(SI.getPR_G_Item().getPR_F_I_number(),SI.getPR_G_Item().getPR_F_GCE_category(),SI.getPR_G_Item().getPR_F_S_name(),SI.getPR_G_Item().getPR_F_BD_purchasevalue(),SI.getPR_G_Item().getPR_F_BD_sellvalue(),SI.getPR_G_Item().getPR_F_GPE_property(),SI.getPR_G_Item().getPR_F_GPE_propertyValue()),SI.getPR_I_Amount()));
 					}
 					switch (TOperation) {
 						case 1 -> { //Hinzufügen von Item
