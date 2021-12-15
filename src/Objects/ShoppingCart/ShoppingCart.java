@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class ShoppingCart {
     private final int PR_F_I_ID; //ID des Einkaufswagens
-	  private final String PR_F_S_Name; //Name des Einkaufswagens
+    private final String PR_F_S_Name; //Name des Einkaufswagens
     protected ArrayList<ShoppingItem> PR_LSI_ShoppingCart; //Liste des Typs "ShoppingItem", der alle Produkte mit dazugehöriger Anzahl
     private final ShoppingCartEnumeration PR_SCE_ShoppingCartType; //Kategorie des Einkaufswagens (Standard, Öko-Prinzip, U18, Mitarbeiterkaufprogramm, Spar-Korb)
 
