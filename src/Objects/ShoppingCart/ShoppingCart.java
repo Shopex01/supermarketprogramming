@@ -65,6 +65,10 @@ public class ShoppingCart {
         };
     }
 
+    /**
+     * Gibt den Warenwert des Einkaufswagens zurück!
+     * @return Warenwert (Typ: Double)
+     */
     public double getPR_LSI_ShoppingCartOverallValueDouble() {
         if (PR_LSI_ShoppingCart.isEmpty())
         {
@@ -91,18 +95,35 @@ public class ShoppingCart {
         return Backend.PU_SF_DF_DoubleFormat.format(getPR_LSI_ShoppingCartOverallValueDouble()) +"EUR";
     }
 
+    /**
+     * Gibt die ShoppingItem-Liste zurück!
+     * @return ShoppingItem-Liste (Typ: ShoppingItem - ArrayList)
+     */
     public ArrayList<ShoppingItem> getPR_LSI_ShoppingCart() {
         return PR_LSI_ShoppingCart;
     }
 
+    /**
+     * Fügt ein ShoppingItem in der ShoppingItem-Liste hinzu!
+     * @param TItem ShoppingItem
+     */
 	public void addShoppingItem(ShoppingItem TItem) {
         PR_LSI_ShoppingCart.add(TItem);
     }
 
+    /**
+     * Entfernt ein Shopping-Item aus der ShoppingItem-Liste anhand der Produkt-Nummer(ID)
+     * @param TSINumber Produkt-Nummer(ID)
+     */
     public void removeShoppingItem(int TSINumber) {
         PR_LSI_ShoppingCart.removeIf(T_SI_Item -> T_SI_Item.checkPRGItemID(TSINumber));
     }
 
+    /**
+     * Ändert die Anzahl eines Shopping-Items aus der ShoppingItem-Liste anhand der Produkt-Nummer(ID)
+     * @param TSINumber Produkt-Nummer(ID)
+     * @param TSIAmount neue Anzahl
+     */
     public void changeShoppingItemAmount(int TSINumber, int TSIAmount) {
         for (ShoppingItem T_SI_Item: PR_LSI_ShoppingCart) {
             if (T_SI_Item.checkPRGItemID(TSINumber)) {
