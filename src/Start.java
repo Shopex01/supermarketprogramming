@@ -1,7 +1,13 @@
 import java.awt.*;
 import GUI.Frontend;
 
+/**
+ * Start-Klasse
+ */
 public class Start {
+    /**
+     * Startet die Applikation
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {

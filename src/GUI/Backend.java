@@ -13,10 +13,21 @@ import static Objects.Goods.GoodCategoryEnumerations.*;
 import static Objects.Goods.GoodCategoryEnumerations.OTHER;
 import static Objects.Goods.GoodPropertyEnumerations.*;
 
+/**
+ * Diese Klasse repräsentiert das Backend der GUI
+ */
 public class Backend {
-
+	/**
+	 * Model der Tabelle in dem Tab "Warenkorb-Liste"
+	 */
 	protected static final DefaultTableModel PT_SF_DTM_ShoppingCartListModel = new DefaultTableModel(new String[] {"ID","Warenkorbname", "Warenkorbart", "Preis"}, 0);
+	/**
+	 * Model der Tabelle in dem Tab "Produkte"
+	 */
 	protected static final DefaultTableModel PT_SF_DTM_ProductListModel = new DefaultTableModel(new String[] {"ID", "Kategorie","Produkt", "Preis","Weitere Eigenschaft"}, 0);
+	/**
+	 * Model der Tabele in dem Tab "Warenkorb"
+	 */
 	protected static final DefaultTableModel PT_SF_DTM_ShoppingCartModel = new DefaultTableModel(new String[] {"ID","Artikel", "Menge", "Preis", "Weitere Eigenschaft"}, 0);
 
 	private static ArrayList<ShoppingCart> PR_S_AL_ShoppingCarts;
@@ -24,16 +35,43 @@ public class Backend {
 
 	private int PR_I_ShoppingCartCounter;
 	private ShoppingCart PR_SC_SelectedShoppingCart;
+	/**
+	 * Variable "Tageseinnahmen"
+	 */
 	private double PR_D_DailyOverallSellValue = 0;
 
+	/**
+	 * Format für alle Preiswerte
+	 */
 	public static final DecimalFormat PU_SF_DF_DoubleFormat = new DecimalFormat("0.00");
 
+	/**
+	 * Standard-Status "leer"
+	 */
 	protected String PT_S_StatusOverall = "";
+	/**
+	 * Status "Neuer Warenkorb"
+	 */
 	protected static String PT_S_S_StatusNewCart = "";
+	/**
+	 * Status "Neues ShoppingItem"
+	 */
 	protected static String PT_S_S_StatusNewShoppingItem = "";
+	/**
+	 * Status "ShoppingItem löschen"
+	 */
 	protected static String PT_S_S_StatusDeleteShoppingItem = "";
+	/**
+	 * Status-Boolean - Wert "Neues ShoppingItem"
+	 */
 	private static boolean PR_S_B_StatusNewShoppingItem =false;
+	/**
+	 * Status-Boolean - Wert "ShoppingItem löschen"
+	 */
 	private static boolean PR_S_B_StatusDeleteShoppingItem=false;
+	/**
+	 * Status-Boolean - Wert "Neuer Warenkorb"
+	 */
 	private static boolean PR_S_B_StatusNewCart = false;
 
 	/**

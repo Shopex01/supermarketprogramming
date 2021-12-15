@@ -23,6 +23,7 @@ public class Good {
      * @param T_D_PPrice Produkt - Verkaufspreis
      * @param T_D_SPrice Produkt - Einkaufspreis
      * @param T_GPE_Prop Produkt - (weitere) Eigenschaft (Keine, Mindesthaltbarkeitsdatum, Recycling-Anteil, FSK-Kategorie)
+     * @param T_GPE_PropValue Produkt - (weitere) Eigenschaft - Wert
      */
     public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_D_PPrice, Double T_D_SPrice, GoodPropertyEnumerations T_GPE_Prop, String T_GPE_PropValue) {
         PR_F_I_number = T_I_Num;
