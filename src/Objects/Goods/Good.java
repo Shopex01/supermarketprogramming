@@ -11,14 +11,16 @@ public class Good {
     private final Double PR_F_BD_sellvalue; //Good-SellPrice
     private final Currency PR_F_C_currency; //Good-Currency
     private final GoodPropertyEnumerations PR_F_GPE_property; //Good-Property
+    private final String PR_F_GPE_propertyValue;
 
-    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_BD_PPrice, Double T_BD_SPrice, GoodPropertyEnumerations T_GPE_Prop) {
+    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_BD_PPrice, Double T_BD_SPrice, GoodPropertyEnumerations T_GPE_Prop, String T_GPE_PropValue) {
         PR_F_I_number = T_I_Num;
         PR_F_GCE_category = T_GCE_Cat;
         PR_F_S_name = T_S_Name;
         PR_F_BD_purchasevalue = T_BD_PPrice;
         PR_F_BD_sellvalue = T_BD_SPrice;
         PR_F_GPE_property = T_GPE_Prop;
+        PR_F_GPE_propertyValue = T_GPE_PropValue;
         PR_F_C_currency = Currency.getInstance("EUR");
     }
 
@@ -50,11 +52,13 @@ public class Good {
         return PR_F_GPE_property;
     }
 
+    public String getPR_F_GPE_propertyValue(){return PR_F_GPE_propertyValue;}
+
     public String getPR_F_GPE_propertyString() {
         return switch (PR_F_GPE_property) {
-            case EXPIRATIONDATE -> "Mindesthaltbarkeitsdatum";
-            case RECYCLING -> "Recycling-Anteil";
-            case FSK -> "FSK-Kategorie";
+            case EXPIRATIONDATE -> "MHD: ";
+            case RECYCLING -> "Recycle-Anteil: ";
+            case FSK -> "FSK: ";
             case NONE -> "Standard";
         };
     }
