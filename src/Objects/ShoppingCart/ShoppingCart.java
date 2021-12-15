@@ -1,7 +1,8 @@
 package Objects.ShoppingCart;
 
+import GUI.Backend;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Diese Klasse repräsentiert einen Einkaufswagen dar!
@@ -9,9 +10,9 @@ import java.util.List;
  *  @version 1.0
  */
 public class ShoppingCart {
-
-	private final String PR_S_Name; //Name des Einkaufswagens
-    private final List<ShoppingItem> PR_LSI_ShoppingCart; //Liste des Typs "ShoppingItem", der alle Produkte mit dazugehöriger Anzahl
+    private final int PR_F_I_ID; //ID des Einkaufswagens
+	  private final String PR_F_S_Name; //Name des Einkaufswagens
+    protected ArrayList<ShoppingItem> PR_LSI_ShoppingCart; //Liste des Typs "ShoppingItem", der alle Produkte mit dazugehöriger Anzahl
     private final ShoppingCartEnumeration PR_SCE_ShoppingCartType; //Kategorie des Einkaufswagens (Standard, Öko-Prinzip, U18, Mitarbeiterkaufprogramm, Spar-Korb)
 
     /**
@@ -19,68 +20,28 @@ public class ShoppingCart {
      * @param PR_SCE_ShoppingCartType Typ des Einkaufswagens
      * @param PR_S_Name Name des Einkaufswagens
      */
-    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name) {
+    public ShoppingCart(ShoppingCartEnumeration PR_SCE_ShoppingCartType, String PR_S_Name, int PR_F_I_ID) {
         this.PR_LSI_ShoppingCart = new ArrayList<>();
         this.PR_SCE_ShoppingCartType = PR_SCE_ShoppingCartType;
-        this.PR_S_Name = PR_S_Name;
+        this.PR_F_S_Name = PR_S_Name;
+        this.PR_F_I_ID = PR_F_I_ID;
     }
 
     /**
-     * Gibt den Namen des Einkaufswagens zurück!
-     * @return Name (Typ: String)
-     */
+    * Gibt die ID des Einkaufswagens zurück!
+    * @return ID (Typ: Integer)
+    */
+    public int getPR_F_I_ID() {
+        return PR_F_I_ID;
+    }
+
+   /**
+    * Gibt den Namen des Einkaufswagens zurück!
+    * @return Name (Typ: String)
+    */
     public String getPR_S_Name() {
-		return PR_S_Name;
+		return PR_F_S_Name;
 	}
-
-    /**
-     * Fügt ein ShoppingItem (Produkt mit Anzahl) in den Einkaufskorb hinzu!
-     * @param TItem ShoppingItem (Produkt mit Anzahl)
-     * @return Boolean-Wert, ob das ShoppingItem erfolgreich in der Liste hinzugefügt wurde!
-     */
-	public boolean addShoppingItem(ShoppingItem TItem) {
-        return PR_LSI_ShoppingCart.add(TItem);
-    }
-
-    /**
-     * Entfernt ein ShoppingItem (Produkt mit Anzahl) aus dem Einkaufskorb anhand der Produkt-ID!
-     * @param TSINumber Produkt-ID
-     * @return Boolean-Wert, ob das ShoppingItem erfolgreich in der Liste entfernt wurde!
-     */
-    public boolean removeShoppingItem(int TSINumber) {
-        return PR_LSI_ShoppingCart.removeIf(T_SI_Item -> T_SI_Item.checkPRGItemID(TSINumber));
-    }
-
-    /**
-     * Ändert die Anzahl eines ShoppingItems (Produkt mit Anzahl) aus dem Einkaufskorb anhand der Produkt-ID und der übergebenen Anzahl!
-     * @param TSINumber Produkt-ID
-     * @param TSIAmount neue Produkt - Anzahl
-     * @return Boolean-Wert, ob die Anzahl des ShoppingItems erfolgreich verändert wurde!
-     */
-    public boolean changeShoppingItemAmount(int TSINumber,int TSIAmount) {
-        for (ShoppingItem T_SI_Item: PR_LSI_ShoppingCart) {
-            if (T_SI_Item.checkPRGItemID(TSINumber)) {
-                T_SI_Item.setPR_I_Amount(TSIAmount);
-                PR_LSI_ShoppingCart.set(PR_LSI_ShoppingCart.indexOf(T_SI_Item),T_SI_Item);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Gibt das ShoppingItem (Produkt mit Anzahl) anhand der Produkt-ID aus!
-     * @param TSINumber Produkt-ID
-     * @return Produkt mit Anzahl (Typ: ShoppingItem)
-     */
-    public ShoppingItem getShoppingItem(int TSINumber) {
-        for (ShoppingItem T_SI_Item: PR_LSI_ShoppingCart) {
-            if (T_SI_Item.checkPRGItemID(TSINumber)) {
-                return T_SI_Item;
-            }
-        }
-        return null;
-    }
 
     /**
      * Gibt die Kategorie des Einkaufswagens zurück!
@@ -104,33 +65,52 @@ public class ShoppingCart {
         };
     }
 
-    /**
-     * Gibt den Gesamtwert des Einkaufswagens zurück!
-     * @return Gesamtwert (Typ: String)
-     */
-    public String getPR_LSI_ShoppingCartOverallValue() {
+    public double getPR_LSI_ShoppingCartOverallValueDouble() {
         if (PR_LSI_ShoppingCart.isEmpty())
         {
-            return "0.00 EUR";
+            return 0;
         }
         else {
-            Double OValue = (double) 0;
+            double OValue = 0;
             for (ShoppingItem i: PR_LSI_ShoppingCart) {
                 if (PR_SCE_ShoppingCartType==ShoppingCartEnumeration.EMPLOYEE) {
-                    OValue += i.getPR_G_Item().getPR_F_D_purchasevalue();
+                    OValue += i.getPR_G_Item().getPR_F_BD_purchasevalue()*i.getPR_I_Amount();
                 } else {
-                    OValue += i.getPR_G_Item().getPR_F_D_sellvalue();
+                    OValue += i.getPR_G_Item().getPR_F_BD_sellvalue()*i.getPR_I_Amount();
                 }
             }
-            return OValue +" EUR";
+            return OValue;
         }
     }
 
-    /**
-     * Baut einen String kombiniert mit dem Namen, der Kategorie und dem Gesamtwert des Einkaufswagens zusammen!
-     * @return Bezeichnung des Einkaufswagens (Name - Kategorie - Gesamtwert) (Typ: String)
-     */
-    public String getListName() {
-        return PR_S_Name + " " + getPR_SCE_ShoppingCartTypeString() + " - " + getPR_LSI_ShoppingCartOverallValue();
+   /**
+    * Gibt den Gesamtwert des Einkaufswagens zurück!
+    * @return Gesamtwert (Typ: String)
+    */
+    public String getPR_LSI_ShoppingCartOverallValue() {
+        return Backend.PU_SF_DF_DoubleFormat.format(getPR_LSI_ShoppingCartOverallValueDouble()) +"EUR";
     }
+
+    public ArrayList<ShoppingItem> getPR_LSI_ShoppingCart() {
+        return PR_LSI_ShoppingCart;
+    }
+
+	public void addShoppingItem(ShoppingItem TItem) {
+        PR_LSI_ShoppingCart.add(TItem);
+    }
+
+    public void removeShoppingItem(int TSINumber) {
+        PR_LSI_ShoppingCart.removeIf(T_SI_Item -> T_SI_Item.checkPRGItemID(TSINumber));
+    }
+
+    public void changeShoppingItemAmount(int TSINumber, int TSIAmount) {
+        for (ShoppingItem T_SI_Item: PR_LSI_ShoppingCart) {
+            if (T_SI_Item.checkPRGItemID(TSINumber)) {
+                T_SI_Item.setPR_I_Amount(TSIAmount);
+                PR_LSI_ShoppingCart.set(PR_LSI_ShoppingCart.indexOf(T_SI_Item),T_SI_Item);
+                return;
+            }
+        }
+    }
+
 }

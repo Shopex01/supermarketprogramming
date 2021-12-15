@@ -1,6 +1,5 @@
 package Objects.Goods;
 
-
 /**
  * Diese Klasse repräsentiert das Produkt allgemein in einem Supermarkt!
  * @author Arthur Ladner
@@ -14,6 +13,7 @@ public class Good {
     private final Double PR_F_D_purchasevalue; //Good-PurchasePrice
     private final Double PR_F_D_sellvalue; //Good-SellPrice
     private final GoodPropertyEnumerations PR_F_GPE_property; //Good-Property
+    private final String PR_F_GPE_propertyValue;
 
     /**
      * Generiert ein Produkt anhand folgender Eigenschaften:
@@ -24,13 +24,14 @@ public class Good {
      * @param T_D_SPrice Produkt - Einkaufspreis
      * @param T_GPE_Prop Produkt - (weitere) Eigenschaft (Keine, Mindesthaltbarkeitsdatum, Recycling-Anteil, FSK-Kategorie)
      */
-    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_D_PPrice, Double T_D_SPrice, GoodPropertyEnumerations T_GPE_Prop) {
+    public Good(int T_I_Num, GoodCategoryEnumerations T_GCE_Cat, String T_S_Name, Double T_BD_PPrice, Double T_BD_SPrice, GoodPropertyEnumerations T_GPE_Prop, String T_GPE_PropValue) {
         PR_F_I_number = T_I_Num;
         PR_F_GCE_category = T_GCE_Cat;
         PR_F_S_name = T_S_Name;
-        PR_F_D_purchasevalue = T_D_PPrice;
-        PR_F_D_sellvalue = T_D_SPrice;
+        PR_F_D_purchasevalue = T_BD_PPrice;
+        PR_F_D_sellvalue = T_BD_SPrice;
         PR_F_GPE_property = T_GPE_Prop;
+        PR_F_GPE_propertyValue = T_GPE_PropValue;
     }
 
     /**
@@ -61,15 +62,14 @@ public class Good {
      * Gibt den Einkaufspreis des Produktes aus!
      * @return Produkt - Einkaufspreis (Typ: double)
      */
-    public Double getPR_F_D_purchasevalue() {
+    public Double getPR_F_BD_purchasevalue() {
         return PR_F_D_purchasevalue;
     }
-
     /**
      * Gibt den Verkaufspreis des Produktes aus!
      * @return Produkt - Verkaufspreis (Typ: double)
      */
-    public Double getPR_F_D_sellvalue() {
+    public Double getPR_F_BD_sellvalue() {
         return PR_F_D_sellvalue;
     }
 
@@ -80,4 +80,24 @@ public class Good {
     public GoodPropertyEnumerations getPR_F_GPE_property() {
         return PR_F_GPE_property;
     }
+
+    public String getPR_F_GPE_propertyValue(){return PR_F_GPE_propertyValue;}
+
+    public String getPR_F_GPE_propertyString() {
+        return switch (PR_F_GPE_property) {
+            case EXPIRATIONDATE -> "MHD: ";
+            case RECYCLING -> "Recycle-Anteil: ";
+            case FSK -> "FSK: ";
+            case NONE -> "Standard";
+        };
+    }
+
+    public String getPR_F_GCE_categoryString() {
+        return switch (PR_F_GCE_category) {
+            case FOOD -> "Lebensmittel";
+            case HOUSEHOLD -> "Haushaltsartikel";
+            case OTHER -> "Sonstige";
+        };
+    }
+
 }
